@@ -33,12 +33,23 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
-      - name: Setup Ruby
+        
+      - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: '2.4.0' # Not needed with a .ruby-version file
-          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-          cache-version: 0 # Increment this number if you need to re-download cached gems
+          bundler-cache: false # runs 'bundle install' and caches installed gems automatically
+          
+      - name: Install compatible Bundler
+        run: |
+          gem install bundler -v 1.17.3
+      -name: Install dependencies
+        run: |
+          bundle _1.17.3_ install
+      -name: Build site
+        run: |
+          bundle _1.17.3_ exec jekyll build
+          
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v6
@@ -46,6 +57,7 @@ jobs:
         with:
           python-version: '3.12'
       - run: python build-scripts/sanitize_items.py
+      
       - name: Build with Jekyll
         # Outputs to the './_site' directory by default
         run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
