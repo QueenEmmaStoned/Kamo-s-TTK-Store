@@ -70,8 +70,9 @@ mods:
 # Build settings
 remote_theme: pages-themes/midnight@v0.2.0
 
- plugins:
+plugins:
   - jekyll-remote-theme
+  - jekyll-seo-tag
 
 markdown: kramdown
 
