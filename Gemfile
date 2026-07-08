@@ -4,6 +4,7 @@ ruby "2.4.0"
 
 gem "bundler", "1.17.3"
 gem "jekyll", "3.9.5"
+gem 'kramdown-parser-gfm', '>= 1.1'
 gem 'jekyll-remote-theme', '>= 0.4.3'
 gem "jekyll-theme-midnight", "0.2.0"
 
