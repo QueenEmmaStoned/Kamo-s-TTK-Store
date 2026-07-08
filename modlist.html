@@ -1,13 +1,11 @@
 ---
 title: Mod List
-layout: page
+layout: default
 permalink: /modlist
 store: true
 ---
 
-<script src="{{- 'assets/js/filter.js' | relative_url -}}"></script>
-<link rel="stylesheet" href="{{- 'assets/css/core.css' | relative_url -}} " />
-<script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+{% include store_assets.html %}
 
 <div id="mods">
     {%- include search.html
