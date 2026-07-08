@@ -68,7 +68,7 @@ mods:
   author: true
 
 # Build settings
-theme: jekyll-theme-midnight
+theme: type-on-strap
 markdown: kramdown
 sass:
   style: compressed
