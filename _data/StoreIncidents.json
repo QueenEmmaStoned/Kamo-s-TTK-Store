@@ -111,13 +111,13 @@
 		"karmatype": "Good"
 	},
 	{
-		"abr": "resourcepodcrash",
-		"price": 300,
+		"abr": "wandererjoins",
+		"price": 50,
 		"karmatype": "Good"
 	},
 	{
-		"abr": "transportpodcrash",
-		"price": 600,
+		"abr": "resourcepodcrash",
+		"price": 300,
 		"karmatype": "Good"
 	},
 	{
@@ -137,7 +137,7 @@
 	},
 	{
 		"abr": "maninblack",
-		"price": 350,
+		"price": 1900,
 		"karmatype": "Good"
 	},
 	{
@@ -306,6 +306,11 @@
 		"karmatype": "Neutral"
 	},
 	{
+		"abr": "item",
+		"price": 1,
+		"karmatype": "Good"
+	},
+	{
 		"abr": "prisoner",
 		"price": 800,
 		"karmatype": "Good"
@@ -357,7 +362,7 @@
 	},
 	{
 		"abr": "surgery",
-		"price": 500,
+		"price": 1,
 		"karmatype": "Neutral"
 	},
 	{
@@ -372,7 +377,7 @@
 	},
 	{
 		"abr": "rescueme",
-		"price": 800,
+		"price": 1200,
 		"karmatype": "Neutral"
 	},
 	{
@@ -397,6 +402,11 @@
 	},
 	{
 		"abr": "settraits",
+		"price": 1,
+		"karmatype": "Neutral"
+	},
+	{
+		"abr": "cleartraits",
 		"price": 1,
 		"karmatype": "Neutral"
 	},
@@ -436,5 +446,5 @@
 		"karmatype": "Good"
 	}
 	],
-	"total": 87
+	"total": 89
 }
