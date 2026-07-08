@@ -2,4 +2,4 @@ source "https://rubygems.org"
 
 gem "jekyll", "~> 4.3"
 
-gem "type-on-strap", "~> 2.4"
+gem "github-pages", group: :jekyll_plugins
