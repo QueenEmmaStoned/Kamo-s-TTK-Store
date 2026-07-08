@@ -43,26 +43,29 @@ jobs:
       - name: Install compatible Bundler
         run: |
           gem install bundler -v 1.17.3
-      -name: Install dependencies
+          
+      - name: Install dependencies
         run: |
           bundle _1.17.3_ install
-      -name: Build site
-        run: |
-          bundle _1.17.3_ exec jekyll build
           
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v6
-      - uses: actions/setup-python@v6
+        
+      - name: Set up Python
+        uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - run: python build-scripts/sanitize_items.py
+
+      - name: Sanitize items
+        run: python build-scripts/sanitize_items.py
       
       - name: Build with Jekyll
         # Outputs to the './_site' directory by default
         run: bundle exec jekyll build --baseurl "${{ steps.pages.outputs.base_path }}"
         env:
           JEKYLL_ENV: production
+          
       - name: Upload artifact
         # Automatically uploads an artifact from the './_site' directory by default
         uses: actions/upload-pages-artifact@v3
