@@ -83,8 +83,8 @@ PLATFORMS
   x64-mingw32
 
 DEPENDENCIES
-  jekyll (~> 4.3)
-  type-on-strap (~> 2.4)
+  jekyll (> 3.5 < 5.0)
+  jekyll-seo-tag (~> 2.0)
 
 BUNDLED WITH
    2.4.5
