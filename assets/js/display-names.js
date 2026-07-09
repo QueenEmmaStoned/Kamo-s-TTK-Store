@@ -34,20 +34,15 @@ function humanizeStoreName(text, commandName) {
 }
 
 function shouldUseCommandNameAsDisplay(rawDisplayName, rawCommandName) {
-    const displayPrefixes = [
-        "HAR",
-        "Aya"
-    ];
-
-    const startsWithSpecialPrefix = displayPrefixes.some(function (prefix) {
-        return rawDisplayName.startsWith(prefix);
-    });
+    const startsWithSpecialPrefix =
+        rawDisplayName.startsWith("HAR") ||
+        rawDisplayName.startsWith("Aya");
 
     const isHarMeat =
         /^HAR\s+(CO\s+Race|EL\s+Monster).*Meat$/i.test(rawDisplayName);
 
     return rawCommandName && (startsWithSpecialPrefix || isHarMeat);
-    }
+}
 
 function applyManualCommandSpacing(name) {
     const manualRules = [
