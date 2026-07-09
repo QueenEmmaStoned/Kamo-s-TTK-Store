@@ -146,7 +146,7 @@ function shouldUseCommandNameForSpecialFormattedItem(rawDisplayName, rawCommandN
     }
 
     return (
-        isNanoArchoMechaniteSpecial(rawDisplayName, rawCommandName) ||
+        isNanoOrMechaniteSpecial(rawDisplayName, rawCommandName) ||
         isTrainerOrTechprint(rawCommandName) ||
         isTreatmentPill(rawCommandName) ||
         shouldUseCommandNameForDbhStuffOrHyphen(rawDisplayName, rawCommandName)
@@ -154,7 +154,7 @@ function shouldUseCommandNameForSpecialFormattedItem(rawDisplayName, rawCommandN
 }
 
 function formatSpecialCommandName(rawDisplayName, rawCommandName) {
-    if (isNanoArchoMechaniteSpecial(rawDisplayName, rawCommandName)) {
+    if (isNanoOrMechaniteSpecial(rawDisplayName, rawCommandName)) {
         return formatNanoArchoMechaniteSpecial(rawDisplayName, rawCommandName);
     }
 
@@ -551,25 +551,6 @@ function formatNanoOrMechaniteSpecial(rawCommandName) {
     return titleCaseKnownWords(raw);
 }
 
-    for (const item of patterns) {
-        const match = source.match(item.pattern);
-
-        if (!match) {
-            continue;
-        }
-
-        const purpose = cleanSpecialPurpose(match[1] || match[2] || "");
-
-        if (!purpose) {
-            return item.label;
-        }
-
-        return item.label + " - " + purpose;
-    }
-
-    return titleCaseKnownWords(source);
-}
-
 function cleanSpecialPurpose(purpose) {
     return titleCaseKnownWords(String(purpose || "")
         .replace(/^[_\s-]+/, "")
@@ -641,6 +622,22 @@ function titleCaseKnownWords(text) {
         .split(/\s+/)
         .filter(Boolean)
         .map(capitalizeFirstLetter)
+        .join(" ");
+}
+
+function titleCasePreserveHyphen(text) {
+    return String(text || "")
+        .replace(/_/g, " ")
+        .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+        .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
+        .split(/\s+/)
+        .filter(Boolean)
+        .map(function (word) {
+            return word
+                .split("-")
+                .map(capitalizeFirstLetter)
+                .join("-");
+        })
         .join(" ");
 }
 
