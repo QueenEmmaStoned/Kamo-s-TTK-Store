@@ -2,19 +2,26 @@ function humanizeStoreName(text, commandName) {
     if (!text) {
         return "";
     }
-    const rawName = text.trim();
-    
-    let name = text
+
+    const rawDisplayName = text.trim();
+    const rawCommandName = (commandName || "").trim();
+
+    const shouldUseCommandName =
+        rawCommandName && shouldUseCommandNameAsDisplay(rawCommandName);
+
+    let name = shouldUseCommandName ? rawCommandName : rawDisplayName;
+
+    name = name
         .replace(/[_-]+/g, " ")
         .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
         .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
         .replace(/\s+/g, " ")
         .trim();
 
-    if (shouldSkipDisplayNameCleanup(rawName)) {
+    if (shouldUseCommandName) {
         return name;
     }
-    
+
     name = removeDisplayOnlyTags(name);
     name = movePriorityTagsToFront(name);
     name = moveLeadingTagsToEnd(name);
@@ -24,14 +31,14 @@ function humanizeStoreName(text, commandName) {
     return name;
 }
 
-function shouldSkipDisplayNameCleanup(rawName) {
-    const skippedPrefixes = [
+function shouldUseCommandNameAsDisplay(rawCommandName) {
+    const commandDisplayPrefixes = [
         "HAR",
         "Aya"
     ];
 
-    return skippedPrefixes.some(function (prefix) {
-        return rawName.startsWith(prefix);
+    return commandDisplayPrefixes.some(function (prefix) {
+        return rawCommandName.startsWith(prefix);
         });
     }
 
