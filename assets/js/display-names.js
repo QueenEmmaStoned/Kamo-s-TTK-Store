@@ -10,11 +10,24 @@ function humanizeStoreName(text) {
         .replace(/\s+/g, " ")
         .trim();
 
+    name = removeDisplayOnlyTags(name);
     name = reorderEggName(name);
     name = moveLeadingClarifierToEnd(name);
 
     return name;
 }
+
+function removeDisplayOnlyTags(name) {
+        const removableTags = new Set([
+            "Apparel"
+        ]);
+    
+        return name
+            .split(/\s+/)
+            .filter(word => !removableTags.has(word))
+            .join(" ")
+            .trim();
+    }
 
 function reorderEggName(name) {
     const words = name.split(/\s+/);
