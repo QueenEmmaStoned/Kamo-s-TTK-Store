@@ -45,21 +45,131 @@ function shouldUseCommandNameAsDisplay(rawDisplayName, rawCommandName) {
     }
 
 function applyManualCommandSpacing(name) {
-    let changed = false;
+    const manualRules = [
+        // evedkerenofthedragon -> Evedkeren of the Dragon
+        {
+            pattern: /^(.+?)ofthe(.+)$/i,
+            replace: function (match, firstWord, lastWord) {
+                return capitalizeFirstLetter(firstWord) + " of the " + capitalizeFirstLetter(lastWord);
+            }
+        },
 
-    name = name
-        .replace(/^(.+?)ofthe(.+)$/i, function (match, firstWord, lastWord) {
-            changed = true;
-            return firstWord + " of the " + lastWord;
-        })
-        .trim();
+        // alethianskiawear -> Alethian Skiawear
+        {
+            pattern: /^(.+?)skiawear$/i,
+            replace: function (match, itemName) {
+                return titleCaseKnownWords(itemName) + " Skiawear";
+            }
+        },
 
-    if (changed) {
-        name = capitalizeFirstAndLastWords(name);
+        // elyonarmor -> Elyon Armor
+        {
+            pattern: /^elyon(.+)$/i,
+            replace: function (match, itemName) {
+                return "Elyon " + titleCaseKnownWords(itemName);
+            }
+        },
+
+        // ishbaaldecadentdress -> Ishbaal Decadent Dress
+        {
+            pattern: /^ishbaal(.+)$/i,
+            replace: function (match, itemName) {
+                return "Ishbaal " + titleCaseKnownWords(itemName);
+            }
+        },
+
+        // ishmutianchild'sblouse -> Ishmutian Child's Blouse
+        {
+            pattern: /^ishmutianchild'?s(.+)$/i,
+            replace: function (match, itemName) {
+                return "Ishmutian Child's " + titleCaseKnownWords(itemName);
+            }
+        },
+
+        // skiahelmet -> Skia Helmet
+        {
+            pattern: /^skia(.+)$/i,
+            replace: function (match, itemName) {
+                return "Skia " + titleCaseKnownWords(itemName);
+            }
+        },
+
+        // yuumeat -> Yuu Meat
+        {
+            pattern: /^(.+?)meat$/i,
+            replace: function (match, creatureName) {
+                return titleCaseKnownWords(creatureName) + " Meat";
+            }
         }
+    ];
+
+    for (const rule of manualRules) {
+        if (rule.pattern.test(name)) {
+            return name.replace(rule.pattern, rule.replace).trim();
+        }
+    }
 
     return name;
+}
+function titleCaseKnownWords(text) {
+    let spaced = splitKnownSuffix(text);
+
+    spaced = spaced
+        .replace(/[_-]+/g, " ")
+        .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+        .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
+        .replace(/\s+/g, " ")
+        .trim();
+
+    return spaced
+        .split(/\s+/)
+        .map(capitalizeFirstLetter)
+        .join(" ");
+}
+
+function splitKnownSuffix(text) {
+    const knownSuffixes = [
+        "blouse",
+        "dress",
+        "helmet",
+        "armor",
+        "shirt",
+        "pants",
+        "robe",
+        "cape",
+        "hood",
+        "mask",
+        "veil",
+        "coat",
+        "jacket",
+        "boots",
+        "gloves",
+        "hat",
+        "crown",
+        "collar",
+        "belt"
+    ];
+
+    const lowerText = text.toLowerCase();
+
+    for (const suffix of knownSuffixes) {
+        if (lowerText.endsWith(suffix) && lowerText.length > suffix.length) {
+            const firstPart = text.slice(0, text.length - suffix.length);
+            const lastPart = text.slice(text.length - suffix.length);
+            return firstPart + " " + lastPart;
+        }
     }
+
+    return text;
+}
+
+function capitalizeFirstLetter(word) {
+    if (!word) {
+        return word;
+    }
+
+    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+}
 
 function capitalizeFirstAndLastWords(name) {
     const words = name.split(/\s+/);
