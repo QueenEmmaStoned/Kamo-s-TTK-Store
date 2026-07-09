@@ -2,7 +2,8 @@ function humanizeStoreName(text) {
     if (!text) {
         return "";
     }
-
+    const rawName = text.trim();
+    
     let name = text
         .replace(/[_-]+/g, " ")
         .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
@@ -10,16 +11,41 @@ function humanizeStoreName(text) {
         .replace(/\s+/g, " ")
         .trim();
 
+    if (shouldSkipDisplayNameCleanup(rawName)) {
+        return name;
+    }
+    
     name = removeDisplayOnlyTags(name);
+    name = movePriorityTagsToFront(name);
+    name = moveLeadingTagsToEnd(name);
     name = reorderEggName(name);
     name = moveLeadingClarifierToEnd(name);
 
     return name;
 }
 
+function shouldSkipDisplayNameCleanup(rawName) {
+    const skippedPrefixes = [
+        "HAR",
+        "Aya"
+    ];
+
+    return skippedPrefixes.some(function (prefix) {
+        return rawName.startsWith(prefix);
+        });
+    }
+
 function removeDisplayOnlyTags(name) {
         const removableTags = new Set([
-            "Apparel"
+            "Apparel",
+            "Armor",
+            "Footwear",
+            "Headgear",
+            "Handwear",
+            "Building",
+            "Relic Inert",
+            "Simple",
+            "Mawy"
         ]);
     
         return name
@@ -27,6 +53,59 @@ function removeDisplayOnlyTags(name) {
             .filter(word => !removableTags.has(word))
             .join(" ")
             .trim();
+    }
+function movePriorityTagsToFront(name) {
+    const priorityTags = [
+        "Prestige",
+        "VPE",
+        "VAE",
+        "DBH",
+        "VCE",
+        "VREA",
+        "AEXP",
+        "LWM",
+        "VBE",
+        "AT"
+        
+    ];
+
+    let words = name.split(/\s+/);
+    const foundTags = [];
+
+    priorityTags.forEach(function (tag) {
+        const index = words.indexOf(tag);
+
+        if (index !== -1) {
+            foundTags.push(tag);
+            words.splice(index, 1);
+            }
+        });
+
+    if (foundTags.length === 0) {
+        return name;
+        }
+
+    return [...foundTags, ...words].join(" ");
+    }
+
+function moveLeadingTagsToEnd(name) {
+    const tagPhrases = [
+        ["Animal", "Vaccine"],
+        ["Vaccine"]
+    ];
+
+    const words = name.split(/\s+/);
+
+    for (const tagWords of tagPhrases) {
+        const startsWithTag = tagWords.every((tagWord, index) => words[index] === tagWord);
+
+        if (startsWithTag && words.length > tagWords.length) {
+            const remainingWords = words.slice(tagWords.length);
+            return [...remainingWords, ...tagWords].join(" ");
+            }
+        }
+
+    return name;
     }
 
 function reorderEggName(name) {
@@ -61,7 +140,25 @@ function moveLeadingClarifierToEnd(name) {
         "Meat",
         "Leather",
         "Wool",
-        "Egg"
+        "Egg",
+        "Meal",
+        "Trap",
+        "Shell",
+        "Subcore",
+        "Medicine",
+        "Mech Serum",
+        "Pack",
+        "Sculpture",
+        "Nature Shrine",
+        "Radiator",
+        "Blocks",
+        "Turret",
+        "Targeter",
+        "Pallet",
+        "Crown",
+        "Techprint",
+        "Psytrainer",
+        
     ]);
 
     const firstWord = words[0];
