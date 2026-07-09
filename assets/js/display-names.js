@@ -19,6 +19,7 @@ function humanizeStoreName(text, commandName) {
     }
 
     name = removeDisplayOnlyTags(name);
+    name = removeLeadingFishAnimalTag(name);
     name = movePriorityTagsToFront(name);
     name = moveLeadingTagsToEnd(name);
     name = reorderEggName(name);
@@ -160,6 +161,10 @@ function removeDisplayOnlyTags(name) {
     ];
 
     return removeTagPhrases(name, tagPhrases);
+}
+
+function removeLeadingFishAnimalTag(name) {
+    return name.replace(/^Fish\s+(.+)$/i, "$1").trim();
 }
 
 function removeTagPhrases(name, tagPhrases) {
