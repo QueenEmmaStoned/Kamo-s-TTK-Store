@@ -173,6 +173,7 @@ function moveLeadingClarifierToEnd(name) {
 
 window.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".store-display-name").forEach(function (element) {
-        element.textContent = humanizeStoreName(element.textContent);
+        const commandName = element.dataset.commandName || "";
+        element.textContent = humanizeStoreName(element.textContent, commandName);
     });
 });
