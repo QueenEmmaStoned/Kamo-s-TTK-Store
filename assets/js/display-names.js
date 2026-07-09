@@ -343,7 +343,7 @@ function moveLeadingTagsToEnd(name) {
     const tagPhrases = [
         ["Animal", "Vaccine"],
         ["Vaccine"],
-        ["Psytrainer"]
+        ["Targeter"]
     ];
 
     const words = name.split(/\s+/).filter(Boolean);
