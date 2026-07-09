@@ -7,9 +7,11 @@ function humanizeStoreName(text, commandName) {
     const rawCommandName = (commandName || "").trim();
 
     const shouldUseCommandName =
-        rawCommandName && shouldUseCommandNameAsDisplay(rawCommandName);
+        rawCommandName && shouldUseCommandNameAsDisplay(rawDisplayName, rawCommandName);
 
     let name = shouldUseCommandName ? rawCommandName : rawDisplayName;
+
+    name = applyManualCommandSpacing(name);
 
     name = name
         .replace(/[_-]+/g, " ")
@@ -31,16 +33,58 @@ function humanizeStoreName(text, commandName) {
     return name;
 }
 
-function shouldUseCommandNameAsDisplay(rawCommandName) {
-    const commandDisplayPrefixes = [
+function shouldUseCommandNameAsDisplay(rawDisplayName, rawCommandName) {
+    const displayPrefixes = [
         "HAR",
         "Aya"
     ];
 
-    return commandDisplayPrefixes.some(function (prefix) {
-        return rawCommandName.startsWith(prefix);
+    return displayPrefixes.some(function (prefix) {
+        return rawDisplayName.startsWith(prefix);
         });
     }
+
+function applyManualCommandSpacing(name) {
+    let changed = false;
+
+    name = name
+        .replace(/^(.+?)ofthe(.+)$/i, function (match, firstWord, lastWord) {
+            changed = true;
+            return firstWord + " of the " + lastWord;
+        })
+        .trim();
+
+    if (changed) {
+        name = capitalizeFirstAndLastWords(name);
+        }
+
+    return name;
+    }
+
+function capitalizeFirstAndLastWords(name) {
+    const words = name.split(/\s+/);
+
+    if (words.length === 0) {
+        return name;
+    }
+
+    words[0] = capitalizeFirstLetter(words[0]);
+
+    if (words.length > 1) {
+        const lastIndex = words.length - 1;
+        words[lastIndex] = capitalizeFirstLetter(words[lastIndex]);
+        }
+
+    return words.join(" ");
+    }
+
+function capitalizeFirstLetter(word) {
+    if (!word) {
+        return word;
+    }
+
+    return word.charAt(0).toUpperCase() + word.slice(1);
+}
 
 function removeDisplayOnlyTags(name) {
         const removableTags = new Set([
