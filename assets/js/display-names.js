@@ -389,9 +389,7 @@ function moveWordsToEnd(name, wordsToMove) {
 function moveLeadingTagsToEnd(name) {
     const tagPhrases = [
         ["Animal", "Vaccine"],
-        ["Vaccine"],
-        ["Targeter"],
-        ["Psytrainer"]
+        ["Vaccine"]
     ];
 
     const words = name.split(/\s+/).filter(Boolean);
@@ -459,15 +457,6 @@ function moveLeadingClarifierToEnd(name) {
     }
 
     const leadingClarifiers = new Set([
-        "cat",
-        "bear",
-        "wolf",
-        "fox",
-        "bow",
-        "giraffe",
-        "soup",
-        "pangolin",
-        "hedgehog",
         "meat",
         "leather",
         "wool",
@@ -655,7 +644,7 @@ function splitKnownSuffix(text) {
         "neutralizer",
         "stabilizer",
         "stuffed",
-        "stuff"
+        "stuff",
     ];
 
     const lowerText = text.toLowerCase();
