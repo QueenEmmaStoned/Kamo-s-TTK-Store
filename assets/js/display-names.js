@@ -506,33 +506,50 @@ function addArtificialFromCommandName(name, rawCommandName) {
     return name;
 }
 
-function isNanoArchoMechaniteSpecial(rawDisplayName, rawCommandName) {
-    const haystack = [rawDisplayName, rawCommandName].join(" ");
-
-    return /(nano\s*vaccine|nanovaccine|archo\s*vaccine|archovaccine|mechanite\s*neutralizer|mechaniteneutralizer|mechanite\s*stabilizer|mechanitestabilizer)/i.test(haystack);
+function isNanoOrMechaniteSpecial(rawCommandName) {
+    return /^(nano[-_\s]*vaccine|archo[-_\s]*vaccine|mechanite[-_\s]*(stabilizer|neutralizer))/i.test(rawCommandName || "");
 }
 
-function formatNanoArchoMechaniteSpecial(rawDisplayName, rawCommandName) {
-    const source = rawCommandName || rawDisplayName || "";
+function formatNanoOrMechaniteSpecial(rawCommandName) {
+    const raw = String(rawCommandName || "").trim();
 
     const patterns = [
         {
-            pattern: /^(?:nano\s*vaccine|nanovaccine)(?:\((.+?)\)|[_\s-]*(.+))?$/i,
-            label: "Nano Vaccine"
+            pattern: /^nano[-_\s]*vaccine(?:\((.+?)\)|[-_\s]*(.+))?$/i,
+            label: "NanoVaccine"
         },
         {
-            pattern: /^(?:archo\s*vaccine|archovaccine)(?:\((.+?)\)|[_\s-]*(.+))?$/i,
-            label: "Archo Vaccine"
+            pattern: /^archo[-_\s]*vaccine(?:\((.+?)\)|[-_\s]*(.+))?$/i,
+            label: "ArchoVaccine"
         },
         {
-            pattern: /^(?:mechanite\s*neutralizer|mechaniteneutralizer)(?:\((.+?)\)|[_\s-]*(.+))?$/i,
+            pattern: /^mechanite[-_\s]*neutralizer(?:\((.+?)\)|[-_\s]*(.+))?$/i,
             label: "Mechanite Neutralizer"
         },
         {
-            pattern: /^(?:mechanite\s*stabilizer|mechanitestabilizer)(?:\((.+?)\)|[_\s-]*(.+))?$/i,
+            pattern: /^mechanite[-_\s]*stabilizer(?:\((.+?)\)|[-_\s]*(.+))?$/i,
             label: "Mechanite Stabilizer"
         }
     ];
+
+    for (const item of patterns) {
+        const match = raw.match(item.pattern);
+
+        if (!match) {
+            continue;
+        }
+
+        const purpose = match[1] || match[2] || "";
+
+        if (!purpose) {
+            return item.label;
+        }
+
+        return item.label + " - " + titleCaseKnownWords(purpose);
+    }
+
+    return titleCaseKnownWords(raw);
+}
 
     for (const item of patterns) {
         const match = source.match(item.pattern);
@@ -696,8 +713,8 @@ function splitKnownSuffix(text) {
         "table",
         "pill",
         "vaccine",
-//        "neutralizer",
-//        "stabilizer",
+        "neutralizer",
+        "stabilizer",
         "stuffed",
         "stuff"
     ];
