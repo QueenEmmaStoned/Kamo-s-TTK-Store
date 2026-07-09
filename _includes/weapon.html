@@ -1,6 +1,6 @@
 <tr>
     <td>
-        {%- capture name -%}
+        {%- capture commandName -%}
             {%- if include.itemdata.CustomName != nil -%}
                 {{- include.itemdata.CustomName -}}
             {%- else -%}
@@ -8,13 +8,22 @@
             {%- endif -%}
         {%- endcapture -%}
 
-        {{- name -}}
+        {%- capture displayName -%}
+            {%- if include.itemdata.CustomName != nil -%}
+                {{- include.itemdata.CustomName -}}
+            {%- elsif include.item.defname != nil -%}
+                {{- include.item.defname -}}
+            {%- else -%}
+                {{- include.item.abr -}}
+            {%- endif -%}
+        {%- endcapture -%}
 
+        <span class="store-display-name">{{- displayName -}}</span>
 
         {%- if site.store.items.mod -%}
             <br/>
             <span class="metadata">
-                {{- site.data.language.from | | replace: '%s', include.itemdata.Mod -}}
+                {{- site.data.language.from | replace: '%s', include.itemdata.Mod -}}
             </span>
         {%- endif -%}
 
@@ -23,7 +32,7 @@
             <br/>
             <span class="metadata">
                 {% capture usage %}
-                    {{ include.buyName }} {{ name }} 1
+                    {{ include.buyName }} {{ commandName }} 1
                 {% endcapture %}
 
                 {{- site.data.language.usage | replace: '%s', usage -}}
