@@ -6,6 +6,11 @@ function humanizeStoreName(text, commandName) {
     const rawDisplayName = text.trim();
     const rawCommandName = (commandName || "").trim();
 
+    const mismatchOverride = getMismatchedCommandNameOverride(rawDisplayName, rawCommandName);
+    if (mismatchOverride) {
+        return mismatchOverride;
+    }
+
     if (shouldUseCommandNameForTable(rawDisplayName, rawCommandName)) {
         return formatTableCommandName(rawCommandName);
     }
@@ -72,6 +77,34 @@ function shouldUseCommandNameAsDisplay(rawDisplayName, rawCommandName) {
         rawDisplayName.startsWith("HAR") ||
         rawDisplayName.startsWith("Aya")
     );
+}
+
+function displayNameMatchesCommandName(rawDisplayName, rawCommandName) {
+    if (!rawDisplayName || !rawCommandName) {
+        return false;
+    }
+
+    return normalizeForNameComparison(rawDisplayName) === normalizeForNameComparison(rawCommandName);
+}
+
+function normalizeForNameComparison(name) {
+    return String(name || "")
+        .replace(/&amp;/g, "and")
+        .replace(/['’]/g, "")
+        .replace(/[^a-z0-9]/gi, "")
+        .toLowerCase();
+}
+
+function shouldUseCommandNameForMismatch(rawDisplayName, rawCommandName) {
+    if (!rawCommandName) {
+        return false;
+    }
+
+    if (displayNameMatchesCommandName(rawDisplayName, rawCommandName)) {
+        return false;
+    }
+
+    return true;
 }
 
 function shouldUseCommandNameForTable(rawDisplayName, rawCommandName) {
@@ -588,6 +621,16 @@ function capitalizeFirstLetter(word) {
     }
 
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+}
+
+function getMismatchedCommandNameOverride(rawDisplayName, rawCommandName) {
+    const key = normalizeForNameComparison(rawCommandName);
+
+    const overrides = {
+        advancedcomponent: "Advanced Component"
+    };
+
+    return overrides[key] || "";
 }
 
 window.addEventListener("DOMContentLoaded", function () {
