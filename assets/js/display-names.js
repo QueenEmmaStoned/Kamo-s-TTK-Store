@@ -63,12 +63,72 @@ function formatNameFromCommand(rawCommandName, rawDisplayName, rawModName) {
         return formatMiliraCommandName(rawCommandName, rawDisplayName, rawModName);
     }
 
-    const manualName = applyManualCommandSpacing(rawCommandName);
-    if (manualName !== rawCommandName) {
-        return manualName;
+    return formatCommandNameWithSpacing(rawCommandName);
+}
+
+function formatCommandNameWithSpacing(rawCommandName) {
+    let name = applyManualCommandSpacing(rawCommandName);
+
+    if (name !== rawCommandName) {
+        return name;
     }
 
-    return titleCaseKnownWords(rawCommandName);
+    name = expandKnownCommandTokens(rawCommandName);
+    name = titleCaseKnownWords(name);
+
+    return fixKnownCapitalization(name);
+}
+
+function expandKnownCommandTokens(rawCommandName) {
+    let name = String(rawCommandName || "");
+
+    const knownTokens = [
+        "vanilla",
+        "expanded",
+        "royalty",
+        "odyssey",
+        "dubs",
+        "dub",
+        "bad",
+        "hygiene",
+        "central",
+        "heating",
+        "hotspring",
+        "hotsprings",
+        "lwm",
+        "deep",
+        "storage",
+        "arachne",
+        "milira",
+        "milian",
+        "dragonian",
+        "grenade",
+        "grenades",
+        "armor",
+        "helmet",
+        "helment",
+        "targeter",
+        "table",
+        "small",
+        "broad",
+        "medium",
+        "large",
+        "male",
+        "both",
+        "permit",
+        "class",
+        "letter",
+        "plate"
+    ];
+
+    for (const token of knownTokens) {
+        const pattern = new RegExp(token, "ig");
+        name = name.replace(pattern, " " + token + " ");
+    }
+
+    return name
+        .replace(/\s+/g, " ")
+        .trim();
 }
 
 function applySharedFinalRules(name, rawDisplayName, rawCommandName, rawModName) {
@@ -87,6 +147,7 @@ function applySharedFinalRules(name, rawDisplayName, rawCommandName, rawModName)
     name = moveTargeterToEnd(name);
     name = moveSizeQualifiersToEnd(name);
     name = removeDuplicateWords(name);
+    name = fixKnownCapitalization(name);
     name = capitalizeSingleWordEvelietName(name, rawDisplayName, rawModName);
 
     return name;
@@ -780,6 +841,46 @@ function capitalizeFirstLetter(word) {
             return part.charAt(0).toUpperCase() + part.slice(1).toLowerCase();
         })
         .join("-");
+}
+function fixKnownCapitalization(name) {
+    const replacements = [
+        ["Lwm", "LWM"],
+        ["Dbh", "DBH"],
+        ["Mev", "MEV"],
+        ["Vae", "VAE"],
+        ["Vpe", "VPE"],
+        ["Vwe", "VWE"],
+        ["Vbe", "VBE"],
+        ["Vce", "VCE"],
+        ["Vrea", "VREA"],
+        ["Aexp", "AEXP"],
+        ["Bmot", "BMOT"],
+        ["Sbc", "SBC"],
+        ["Dp", "DP"],
+        ["At", "AT"],
+        ["Har", "HAR"],
+        ["Co", "CO"],
+        ["El", "EL"],
+        ["Dubs", "Dub's"],
+        ["Dub", "Dub's"],
+        ["Geryymons", "Geryymon's"],
+        ["Geryymon", "Geryymon's"]
+    ];
+
+    let fixedName = name;
+
+    for (const replacement of replacements) {
+        const from = replacement[0];
+        const to = replacement[1];
+        const pattern = new RegExp("\\b" + escapeRegExp(from) + "\\b", "g");
+        fixedName = fixedName.replace(pattern, to);
+    }
+
+    return fixedName;
+}
+
+function escapeRegExp(text) {
+    return String(text).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function getModNameForElement(element) {
