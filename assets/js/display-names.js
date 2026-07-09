@@ -255,7 +255,7 @@ function removeDisplayOnlyTags(name) {
         ["VCE"],
         ["VREA"],
         ["MP"],
-        ["MVE"]
+        ["MVE"],
         ["AT"],
         ["SAB"],
         ["LWM"],
@@ -459,7 +459,7 @@ function moveLeadingClarifierToEnd(name) {
     }
 
     const leadingClarifiers = new Set([
-        "cat";
+        "cat",
         "bear",
         "wolf",
         "fox",
