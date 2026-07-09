@@ -41,6 +41,7 @@ function humanizeStoreName(text, commandName) {
     name = moveSmallToFront(name);
     name = moveHatToEnd(name);
     name = moveUniqueToFront(name);
+    name = moreTargeterToEnd(name);
     name = capitalizeSingleWordEvelietName(name, rawDisplayName);
 
     return finalClean(name);
@@ -295,6 +296,9 @@ function moveUniqueToFront(name) {
     return moveWordsToFront(name, ["Unique"]);
 }
 
+function moveTargeterToEnd(name) {
+    return moveWordsToEnd(name, ["Targeter"]);
+}
 function moveWordsToFront(name, wordsToMove) {
     let words = name.split(/\s+/).filter(Boolean);
     const foundWords = [];
@@ -342,8 +346,7 @@ function moveWordsToEnd(name, wordsToMove) {
 function moveLeadingTagsToEnd(name) {
     const tagPhrases = [
         ["Animal", "Vaccine"],
-        ["Vaccine"],
-        ["Targeter"]
+        ["Vaccine"]
     ];
 
     const words = name.split(/\s+/).filter(Boolean);
@@ -411,8 +414,6 @@ function moveLeadingClarifierToEnd(name) {
     }
 
     const leadingClarifiers = new Set([
-        "meat",
-        "leather",
         "wool",
         "egg",
         "meal",
@@ -437,6 +438,8 @@ function moveLeadingClarifierToEnd(name) {
         "soup",
         "pangolin",
         "hedgehog",
+        "meat",
+        "leather",
         "targeter",
         "helmet"
     ]);
