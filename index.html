@@ -13,20 +13,7 @@ title: Kamo's TTK Store
 {%- assign kindsForDisplay = site.data.ShopExt.races | where: "enabled", "true" | sort: "name" -%}
 {%- assign weaponsForDisplay = '' | split: ',' -%}
 
-{%- assign vePsycastsForDisplay = '' | split: ',' -%}
-{%- assign veAnimalsForDisplay = '' | split: ',' -%}
-{%- assign veWeaponsForDisplay = '' | split: ',' -%}
-{%- assign veCookingForDisplay = '' | split: ',' -%}
-{%- assign veBrewingForDisplay = '' | split: ',' -%}
-{%- assign veApparelForDisplay = '' | split: ',' -%}
-{%- assign veArmourForDisplay = '' | split: ',' -%}
-{%- assign veAndroidForDisplay = '' | split: ',' -%}
-{%- assign veAnimalsEndangeredForDisplay = '' | split: ',' -%}
-{%- assign vePlantsForDisplay = '' | split: ',' -%}
-{%- assign veAnimalsWasteForDisplay = '' | split: ',' -%}
-{%- assign veAnimalsRoyalForDisplay = '' | split: ',' -%}
-{%- assign veBooksForDisplay = '' | split: ',' -%}
-{%- assign veHairForDisplay = '' | split: ',' -%}
+{%- assign vanillaExpandedForDisplay = '' | split: ',' -%}
 
 {%- for item in site.data.StoreItems.items -%}
 {%- if item.price <= 0 -%}
@@ -39,34 +26,8 @@ title: Kamo's TTK Store
 {%- assign categoryDown = categoryName | downcase -%}
 {%- assign defNameDown = item.defname | default: '' | downcase -%}
 
-{%- if modName == 'Vanilla Psycasts Expanded' -%}
-{%- assign vePsycastsForDisplay = vePsycastsForDisplay | push: item -%}
-{%- elsif modName == 'Vanilla Animals Expanded' -%}
-{%- assign veAnimalsForDisplay = veAnimalsForDisplay | push: item -%}
-{%- elsif modName == 'Vanilla Weapons Expanded' -%}
-{%- assign veWeaponsForDisplay = veWeaponsForDisplay | push: item -%}
-{%- elsif modName == 'Vanilla Cooking Expanded' -%}
-{%- assign veCookingForDisplay = veCookingForDisplay | push: item -%}
-{%- elsif modName == 'Vanilla Brewing Expanded' -%}
-{%- assign veBrewingForDisplay = veBrewingForDisplay | push: item -%}
-{%- elsif modName == 'Vanilla Apparel Expanded' -%}
-{%- assign veApparelForDisplay = veApparelForDisplay | push: item -%}
-{%- elsif modName == 'Vanilla Armour Expanded' -%}
-{%- assign veArmourForDisplay = veArmourForDisplay | push: item -%}
-{%- elsif modName == 'Vanilla Races Expanded - Android' -%}
-{%- assign veAndroidForDisplay = veAndroidForDisplay | push: item -%}
-{%- elsif modName == 'Vanilla Animals Expanded — Endangered' -%}
-{%- assign veAnimalsEndangeredForDisplay = veAnimalsEndangeredForDisplay | push: item -%}
-{%- elsif modName == 'Vanilla Plants Expanded' -%}
-{%- assign vePlantsForDisplay = vePlantsForDisplay | push: item -%}
-{%- elsif modName == 'Vanilla Animals Expanded — Waste Animals' -%}
-{%- assign veAnimalsWasteForDisplay = veAnimalsWasteForDisplay | push: item -%}
-{%- elsif modName == 'Vanilla Animals Expanded — Royal Animals' -%}
-{%- assign veAnimalsRoyalForDisplay = veAnimalsRoyalForDisplay | push: item -%}
-{%- elsif modName == 'Vanilla Books Expanded' -%}
-{%- assign veBooksForDisplay = veBooksForDisplay | push: item -%}
-{%- elsif modName == 'Vanilla Hair Expanded' -%}
-{%- assign veHairForDisplay = veHairForDisplay | push: item -%}
+{%- if modName contains 'Vanilla' and modName contains 'Expanded' -%}
+{%- assign vanillaExpandedForDisplay = vanillaExpandedForDisplay | push: item -%}
 {%- endif -%}
 
 {%- assign isEggItem = false -%}
@@ -101,20 +62,7 @@ title: Kamo's TTK Store
 {%- assign animalsForDisplay = animalsForDisplay | sort: 'abr' -%}
 {%- assign apparelForDisplay = apparelForDisplay | sort: 'abr' -%}
 {%- assign weaponsForDisplay = weaponsForDisplay | sort: 'abr' -%}
-{%- assign vePsycastsForDisplay = vePsycastsForDisplay | sort: 'abr' -%}
-{%- assign veAnimalsForDisplay = veAnimalsForDisplay | sort: 'abr' -%}
-{%- assign veWeaponsForDisplay = veWeaponsForDisplay | sort: 'abr' -%}
-{%- assign veCookingForDisplay = veCookingForDisplay | sort: 'abr' -%}
-{%- assign veBrewingForDisplay = veBrewingForDisplay | sort: 'abr' -%}
-{%- assign veApparelForDisplay = veApparelForDisplay | sort: 'abr' -%}
-{%- assign veArmourForDisplay = veArmourForDisplay | sort: 'abr' -%}
-{%- assign veAndroidForDisplay = veAndroidForDisplay | sort: 'abr' -%}
-{%- assign veAnimalsEndangeredForDisplay = veAnimalsEndangeredForDisplay | sort: 'abr' -%}
-{%- assign vePlantsForDisplay = vePlantsForDisplay | sort: 'abr' -%}
-{%- assign veAnimalsWasteForDisplay = veAnimalsWasteForDisplay | sort: 'abr' -%}
-{%- assign veAnimalsRoyalForDisplay = veAnimalsRoyalForDisplay | sort: 'abr' -%}
-{%- assign veBooksForDisplay = veBooksForDisplay | sort: 'abr' -%}
-{%- assign veHairForDisplay = veHairForDisplay | sort: 'abr' -%}
+{%- assign vanillaExpandedForDisplay = vanillaExpandedForDisplay | sort: 'abr' -%}
 
 {%- for trait in site.data.ShopExt.traits -%}
 {%- if trait.canAdd == true or trait.canRemove == true -%}
@@ -169,20 +117,7 @@ title: Kamo's TTK Store
     {%- include tab.html id='kinds' -%}
     {%- endif -%}
 
-    {%- if vePsycastsForDisplay.size > 0 -%}{%- include tab.html id='ve_psycasts' label='VE Psycasts' -%}{%- endif -%}
-    {%- if veAnimalsForDisplay.size > 0 -%}{%- include tab.html id='ve_animals' label='VE Animals' -%}{%- endif -%}
-    {%- if veAnimalsRoyalForDisplay.size > 0 -%}{%- include tab.html id='ve_animals_royal' label='VE Royal Animals' -%}{%- endif -%}
-    {%- if veAnimalsEndangeredForDisplay.size > 0 -%}{%- include tab.html id='ve_animals_endangered' label='VE Endangered Animals' -%}{%- endif -%}
-    {%- if veAnimalsWasteForDisplay.size > 0 -%}{%- include tab.html id='ve_animals_waste' label='VE Waste Animals' -%}{%- endif -%}
-    {%- if veWeaponsForDisplay.size > 0 -%}{%- include tab.html id='ve_weapons' label='VE Weapons' -%}{%- endif -%}
-    {%- if veCookingForDisplay.size > 0 -%}{%- include tab.html id='ve_cooking' label='VE Cooking' -%}{%- endif -%}
-    {%- if veBrewingForDisplay.size > 0 -%}{%- include tab.html id='ve_brewing' label='VE Brewing' -%}{%- endif -%}
-    {%- if veApparelForDisplay.size > 0 -%}{%- include tab.html id='ve_apparel' label='VE Apparel' -%}{%- endif -%}
-    {%- if veArmourForDisplay.size > 0 -%}{%- include tab.html id='ve_armour' label='VE Armour' -%}{%- endif -%}
-    {%- if veAndroidForDisplay.size > 0 -%}{%- include tab.html id='ve_android' label='VE Android' -%}{%- endif -%}
-    {%- if vePlantsForDisplay.size > 0 -%}{%- include tab.html id='ve_plants' label='VE Plants' -%}{%- endif -%}
-    {%- if veBooksForDisplay.size > 0 -%}{%- include tab.html id='ve_books' label='VE Books' -%}{%- endif -%}
-    {%- if veHairForDisplay.size > 0 -%}{%- include tab.html id='ve_hair' label='VE Hair' -%}{%- endif -%}
+    {%- if vanillaExpandedForDisplay.size > 0 -%}{%- include tab.html id='vanilla_expanded' label='Vanilla Expanded' -%}{%- endif -%}
 </div>
 
 {%- if itemsForDisplay.size > 0 -%}
@@ -292,22 +227,16 @@ displayData=kindsForDisplay
 placeholder=site.data.language.search_pawn_kinds -%}
 {%- endif -%}
 
-{%- assign veTabs = '' | split: ',' -%}
-
-{%- if vePsycastsForDisplay.size > 0 -%}{%- include store_tab.html id='ve_psycasts' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=vePsycastsForDisplay placeholder='Search VE Psycasts...' -%}{%- endif -%}
-{%- if veAnimalsForDisplay.size > 0 -%}{%- include store_tab.html id='ve_animals' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veAnimalsForDisplay placeholder='Search VE Animals...' -%}{%- endif -%}
-{%- if veAnimalsRoyalForDisplay.size > 0 -%}{%- include store_tab.html id='ve_animals_royal' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veAnimalsRoyalForDisplay placeholder='Search VE Royal Animals...' -%}{%- endif -%}
-{%- if veAnimalsEndangeredForDisplay.size > 0 -%}{%- include store_tab.html id='ve_animals_endangered' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veAnimalsEndangeredForDisplay placeholder='Search VE Endangered Animals...' -%}{%- endif -%}
-{%- if veAnimalsWasteForDisplay.size > 0 -%}{%- include store_tab.html id='ve_animals_waste' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veAnimalsWasteForDisplay placeholder='Search VE Waste Animals...' -%}{%- endif -%}
-{%- if veWeaponsForDisplay.size > 0 -%}{%- include store_tab.html id='ve_weapons' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veWeaponsForDisplay placeholder='Search VE Weapons...' -%}{%- endif -%}
-{%- if veCookingForDisplay.size > 0 -%}{%- include store_tab.html id='ve_cooking' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veCookingForDisplay placeholder='Search VE Cooking...' -%}{%- endif -%}
-{%- if veBrewingForDisplay.size > 0 -%}{%- include store_tab.html id='ve_brewing' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veBrewingForDisplay placeholder='Search VE Brewing...' -%}{%- endif -%}
-{%- if veApparelForDisplay.size > 0 -%}{%- include store_tab.html id='ve_apparel' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veApparelForDisplay placeholder='Search VE Apparel...' -%}{%- endif -%}
-{%- if veArmourForDisplay.size > 0 -%}{%- include store_tab.html id='ve_armour' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veArmourForDisplay placeholder='Search VE Armour...' -%}{%- endif -%}
-{%- if veAndroidForDisplay.size > 0 -%}{%- include store_tab.html id='ve_android' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veAndroidForDisplay placeholder='Search VE Android...' -%}{%- endif -%}
-{%- if vePlantsForDisplay.size > 0 -%}{%- include store_tab.html id='ve_plants' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=vePlantsForDisplay placeholder='Search VE Plants...' -%}{%- endif -%}
-{%- if veBooksForDisplay.size > 0 -%}{%- include store_tab.html id='ve_books' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veBooksForDisplay placeholder='Search VE Books...' -%}{%- endif -%}
-{%- if veHairForDisplay.size > 0 -%}{%- include store_tab.html id='ve_hair' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veHairForDisplay placeholder='Search VE Hair...' -%}{%- endif -%}
+{%- if vanillaExpandedForDisplay.size > 0 -%}
+{%- include store_tab.html
+id='vanilla_expanded'
+type='Item'
+buyName=buy
+headers=itemHeaders
+priceDataHeaders='Cost'
+displayData=vanillaExpandedForDisplay
+placeholder='Search Vanilla Expanded...' -%}
+{%- endif -%}
 
 <script>
     window.addEventListener("load", function (event) {
