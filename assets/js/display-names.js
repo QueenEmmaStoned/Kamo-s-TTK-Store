@@ -167,8 +167,8 @@ function formatSpecialCommandName(rawDisplayName, rawCommandName) {
     }
 
     if (shouldUseCommandNameForDbhStuffOrHyphen(rawDisplayName, rawCommandName)) {
-        return titleCasePreserveHyphen(rawCommandName);
-    }
+    return titleCaseKnownWords(rawCommandName);
+}
 
     return titleCaseKnownWords(rawCommandName);
 }
@@ -506,12 +506,27 @@ function addArtificialFromCommandName(name, rawCommandName) {
     return name;
 }
 
-function isNanoOrMechaniteSpecial(rawCommandName) {
-    return /^(nano[-_\s]*vaccine|archo[-_\s]*vaccine|mechanite[-_\s]*(stabilizer|neutralizer))/i.test(rawCommandName || "");
+function isNanoOrMechaniteSpecial(rawDisplayName, rawCommandName) {
+    const cleanedDisplayName = removeDisplayOnlyTags(normalizeNameSpacing(rawDisplayName || ""));
+    const haystack = [rawCommandName || "", cleanedDisplayName].join(" ");
+
+    return /(nano[-_\s]*vaccine|archo[-_\s]*vaccine|mechanite[-_\s]*neutralizer|mechanite[-_\s]*stabilizer)/i.test(haystack);
 }
 
-function formatNanoOrMechaniteSpecial(rawCommandName) {
-    const raw = String(rawCommandName || "").trim();
+function formatNanoOrMechaniteSpecial(rawDisplayName, rawCommandName) {
+    const cleanedDisplayName = removeDisplayOnlyTags(normalizeNameSpacing(rawDisplayName || ""));
+    const commandSource = String(rawCommandName || "").trim();
+    const displaySource = String(cleanedDisplayName || "").trim();
+
+    return (
+        formatSpecialMedicalItemFromSource(commandSource) ||
+        formatSpecialMedicalItemFromSource(displaySource) ||
+        titleCaseKnownWords(commandSource || displaySource)
+    );
+}
+
+function formatSpecialMedicalItemFromSource(source) {
+    const raw = String(source || "").trim();
 
     const patterns = [
         {
@@ -539,16 +554,16 @@ function formatNanoOrMechaniteSpecial(rawCommandName) {
             continue;
         }
 
-        const purpose = match[1] || match[2] || "";
+        const purpose = cleanSpecialPurpose(match[1] || match[2] || "");
 
         if (!purpose) {
             return item.label;
         }
 
-        return item.label + " - " + titleCaseKnownWords(purpose);
+        return item.label + " - " + purpose;
     }
 
-    return titleCaseKnownWords(raw);
+    return "";
 }
 
 function cleanSpecialPurpose(purpose) {
@@ -590,9 +605,12 @@ function shouldUseCommandNameForDbhStuffOrHyphen(rawDisplayName, rawCommandName)
         return false;
     }
 
+    const haystack = [rawDisplayName, rawCommandName].join(" ");
+
     const looksDbh =
-        /\bDBH\b/i.test(rawDisplayName) ||
-        /Dub'?s\s+Bad\s+Hygiene/i.test(rawDisplayName);
+        /\bDBH\b/i.test(haystack) ||
+        /Dub'?s\s+Bad\s+Hygiene/i.test(haystack) ||
+        /\bdubs/i.test(haystack);
 
     const hasStuffOrHyphen =
         /\bstuff(ed)?\b/i.test(rawDisplayName) ||
@@ -622,22 +640,6 @@ function titleCaseKnownWords(text) {
         .split(/\s+/)
         .filter(Boolean)
         .map(capitalizeFirstLetter)
-        .join(" ");
-}
-
-function titleCasePreserveHyphen(text) {
-    return String(text || "")
-        .replace(/_/g, " ")
-        .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
-        .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
-        .split(/\s+/)
-        .filter(Boolean)
-        .map(function (word) {
-            return word
-                .split("-")
-                .map(capitalizeFirstLetter)
-                .join("-");
-        })
         .join(" ");
 }
 
