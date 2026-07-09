@@ -146,16 +146,16 @@ function shouldUseCommandNameForSpecialFormattedItem(rawDisplayName, rawCommandN
     }
 
     return (
-        isNanoOrMechaniteSpecial(rawCommandName) ||
+        isNanoArchoMechaniteSpecial(rawDisplayName, rawCommandName) ||
         isTrainerOrTechprint(rawCommandName) ||
         isTreatmentPill(rawCommandName) ||
-        isDbhStuffItem(rawDisplayName, rawCommandName)
+        shouldUseCommandNameForDbhStuffOrHyphen(rawDisplayName, rawCommandName)
     );
 }
 
 function formatSpecialCommandName(rawDisplayName, rawCommandName) {
-    if (isNanoOrMechaniteSpecial(rawCommandName)) {
-        return formatNanoOrMechaniteSpecial(rawCommandName);
+    if (isNanoArchoMechaniteSpecial(rawDisplayName, rawCommandName)) {
+        return formatNanoArchoMechaniteSpecial(rawDisplayName, rawCommandName);
     }
 
     if (isTrainerOrTechprint(rawCommandName)) {
@@ -166,7 +166,7 @@ function formatSpecialCommandName(rawDisplayName, rawCommandName) {
         return formatTreatmentPill(rawCommandName);
     }
 
-    if (isDbhStuffItem(rawDisplayName, rawCommandName)) {
+    if (shouldUseCommandNameForDbhStuffOrHyphen(rawDisplayName, rawCommandName)) {
         return titleCaseKnownWords(rawCommandName);
     }
 
@@ -506,50 +506,60 @@ function addArtificialFromCommandName(name, rawCommandName) {
     return name;
 }
 
-function isNanoOrMechaniteSpecial(rawCommandName) {
-    return /^(nano(vaccine)|archovaccine|mechanite(stabilizer|neutralizer))/i.test(rawCommandName || "");
+function isNanoArchoMechaniteSpecial(rawDisplayName, rawCommandName) {
+    const haystack = [rawDisplayName, rawCommandName].join(" ");
+
+    return /(nano\s*vaccine|nanovaccine|archo\s*vaccine|archovaccine|mechanite\s*neutralizer|mechaniteneutralizer|mechanite\s*stabilizer|mechanitestabilizer)/i.test(haystack);
 }
 
-function formatNanoOrMechaniteSpecial(rawCommandName) {
-    const raw = String(rawCommandName || "").trim();
+function formatNanoArchoMechaniteSpecial(rawDisplayName, rawCommandName) {
+    const source = rawCommandName || rawDisplayName || "";
 
     const patterns = [
         {
-            pattern: /^nanovaccine(?:\((.+?)\)|[_\s-]*(.+))?$/i,
+            pattern: /^(?:nano\s*vaccine|nanovaccine)(?:\((.+?)\)|[_\s-]*(.+))?$/i,
             label: "Nano Vaccine"
         },
         {
-            pattern: /^archovaccine(?:\((.+?)\)|[_\s-]*(.+))?$/i,
+            pattern: /^(?:archo\s*vaccine|archovaccine)(?:\((.+?)\)|[_\s-]*(.+))?$/i,
             label: "Archo Vaccine"
         },
         {
-            pattern: /^mechanitestabilizer(?:\((.+?)\)|[_\s-]*(.+))?$/i,
-            label: "Mechanite Stabilizer"
+            pattern: /^(?:mechanite\s*neutralizer|mechaniteneutralizer)(?:\((.+?)\)|[_\s-]*(.+))?$/i,
+            label: "Mechanite Neutralizer"
         },
         {
-            pattern: /^mechaniteneutralizer(?:\((.+?)\)|[_\s-]*(.+))?$/i,
-            label: "Mechanite Neutralizer"
+            pattern: /^(?:mechanite\s*stabilizer|mechanitestabilizer)(?:\((.+?)\)|[_\s-]*(.+))?$/i,
+            label: "Mechanite Stabilizer"
         }
     ];
 
     for (const item of patterns) {
-        const match = raw.match(item.pattern);
+        const match = source.match(item.pattern);
 
         if (!match) {
             continue;
         }
 
-        const purpose = match[1] || match[2] || "";
+        const purpose = cleanSpecialPurpose(match[1] || match[2] || "");
 
         if (!purpose) {
             return item.label;
         }
 
-        return item.label + " - " + titleCaseKnownWords(purpose);
+        return item.label + " - " + purpose;
     }
 
-    return titleCaseKnownWords(raw);
+    return titleCaseKnownWords(source);
 }
+
+function cleanSpecialPurpose(purpose) {
+    return titleCaseKnownWords(String(purpose || "")
+        .replace(/^[_\s-]+/, "")
+        .replace(/[_\s-]+$/, "")
+    );
+}
+
 function isTrainerOrTechprint(rawCommandName) {
     return /^(skilltrainer|psytrainer|techprint)\(/i.test(rawCommandName || "");
 }
@@ -577,20 +587,33 @@ function formatTreatmentPill(rawCommandName) {
     );
 }
 
-function isDbhStuffItem(rawDisplayName, rawCommandName) {
-    const displayLooksDbh = /\bDBH\b|Dub'?s\s+Bad\s+Hygiene/i.test(rawDisplayName || "");
-    const displayHasStuffOrHyphen = /\bstuff(ed)?\b|-/i.test(rawDisplayName || "");
-    const commandHasStuffOrHyphen = /stuff(ed)?|-/i.test(rawCommandName || "");
-
-    if (!displayLooksDbh) {
+function shouldUseCommandNameForDbhStuffOrHyphen(rawDisplayName, rawCommandName) {
+    if (!rawDisplayName || !rawCommandName) {
         return false;
     }
 
-    if (!displayHasStuffOrHyphen && !commandHasStuffOrHyphen) {
+    const looksDbh =
+        /\bDBH\b/i.test(rawDisplayName) ||
+        /Dub'?s\s+Bad\s+Hygiene/i.test(rawDisplayName);
+
+    const hasStuffOrHyphen =
+        /\bstuff(ed)?\b/i.test(rawDisplayName) ||
+        /stuff(ed)?/i.test(rawCommandName) ||
+        /-/.test(rawDisplayName) ||
+        /-/.test(rawCommandName);
+
+    if (!looksDbh || !hasStuffOrHyphen) {
         return false;
     }
 
     return !displayNameMatchesCommandNameAfterTagCleanup(rawDisplayName, rawCommandName);
+}
+
+function displayNameMatchesCommandNameAfterTagCleanup(rawDisplayName, rawCommandName) {
+    let cleanedDisplayName = normalizeNameSpacing(rawDisplayName);
+    cleanedDisplayName = removeDisplayOnlyTags(cleanedDisplayName);
+
+    return normalizeForNameComparison(cleanedDisplayName) === normalizeForNameComparison(rawCommandName);
 }
 
 function titleCaseKnownWords(text) {
