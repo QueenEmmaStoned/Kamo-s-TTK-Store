@@ -70,7 +70,7 @@ function formatCommandNameWithSpacing(rawCommandName) {
     let name = applyManualCommandSpacing(rawCommandName);
 
     if (name !== rawCommandName) {
-        return name;
+        return fixKnownCapitalization(name);
     }
 
     name = expandKnownCommandTokens(rawCommandName);
@@ -93,8 +93,10 @@ function expandKnownCommandTokens(rawCommandName) {
         "hygiene",
         "central",
         "heating",
-        "hotspring",
         "hotsprings",
+        "hotspring",
+        "geryymons",
+        "geryymon",
         "lwm",
         "deep",
         "storage",
@@ -102,8 +104,8 @@ function expandKnownCommandTokens(rawCommandName) {
         "milira",
         "milian",
         "dragonian",
-        "grenade",
         "grenades",
+        "grenade",
         "armor",
         "helmet",
         "helment",
@@ -121,12 +123,18 @@ function expandKnownCommandTokens(rawCommandName) {
         "plate"
     ];
 
-    for (const token of knownTokens) {
-        const pattern = new RegExp(token, "ig");
-        name = name.replace(pattern, " " + token + " ");
-    }
+    const pattern = new RegExp(
+        knownTokens
+            .sort((a, b) => b.length - a.length)
+            .map(escapeRegExp)
+            .join("|"),
+        "ig"
+    );
 
     return name
+        .replace(pattern, function (match) {
+            return " " + match + " ";
+        })
         .replace(/\s+/g, " ")
         .trim();
 }
@@ -845,7 +853,9 @@ function capitalizeFirstLetter(word) {
 function fixKnownCapitalization(name) {
     const replacements = [
         ["Lwm", "LWM"],
+        ["LWM", "LWM"],
         ["Dbh", "DBH"],
+        ["DBH", "DBH"],
         ["Mev", "MEV"],
         ["Vae", "VAE"],
         ["Vpe", "VPE"],
@@ -863,8 +873,11 @@ function fixKnownCapitalization(name) {
         ["El", "EL"],
         ["Dubs", "Dub's"],
         ["Dub", "Dub's"],
+        ["Dub", "Dub's"],
         ["Geryymons", "Geryymon's"],
         ["Geryymon", "Geryymon's"]
+        ["Hotsprings", "Hotsprings"],
+        ["Hotspring", "Hotspring"]
     ];
 
     let fixedName = name;
