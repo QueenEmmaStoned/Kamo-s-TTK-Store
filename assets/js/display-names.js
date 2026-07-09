@@ -696,10 +696,10 @@ function splitKnownSuffix(text) {
         "table",
         "pill",
         "vaccine",
-        "neutralizer",
-        "stabilizer",
+//        "neutralizer",
+//        "stabilizer",
         "stuffed",
-        "stuff",
+        "stuff"
     ];
 
     const lowerText = text.toLowerCase();
