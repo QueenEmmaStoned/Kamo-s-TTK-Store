@@ -155,7 +155,7 @@ function shouldUseCommandNameForSpecialFormattedItem(rawDisplayName, rawCommandN
 
 function formatSpecialCommandName(rawDisplayName, rawCommandName) {
     if (isNanoOrMechaniteSpecial(rawDisplayName, rawCommandName)) {
-        return formatNanoArchoMechaniteSpecial(rawDisplayName, rawCommandName);
+        return formatNanoOrMechaniteSpecial(rawDisplayName, rawCommandName);
     }
 
     if (isTrainerOrTechprint(rawCommandName)) {
@@ -167,7 +167,7 @@ function formatSpecialCommandName(rawDisplayName, rawCommandName) {
     }
 
     if (shouldUseCommandNameForDbhStuffOrHyphen(rawDisplayName, rawCommandName)) {
-        return titleCaseKnownWords(rawCommandName);
+        return titleCasePreserveHyphen(rawCommandName);
     }
 
     return titleCaseKnownWords(rawCommandName);
