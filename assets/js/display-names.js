@@ -129,7 +129,6 @@ function removeDisplayOnlyTags(name) {
         ["Melee", "Weapon"],
         ["Gun"],
         ["Raw"],
-        ["Fish"],
         ["VAE"],
         ["AEXP"],
         ["VPE"],
@@ -155,7 +154,9 @@ function removeDisplayOnlyTags(name) {
         ["Relic"],
         ["Inert"],
         ["Mawy"],
-        ["Industrial"]
+        ["Industrial"],
+        ["VHE"],
+        ["Vce"]
     ];
 
     return removeTagPhrases(name, tagPhrases);
