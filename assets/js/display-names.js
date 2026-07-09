@@ -45,7 +45,8 @@ function removeDisplayOnlyTags(name) {
             "Building",
             "Relic Inert",
             "Simple",
-            "Mawy"
+            "Mawy",
+            "Industrial"
         ]);
     
         return name
@@ -91,7 +92,9 @@ function movePriorityTagsToFront(name) {
 function moveLeadingTagsToEnd(name) {
     const tagPhrases = [
         ["Animal", "Vaccine"],
-        ["Vaccine"]
+        ["Vaccine"],
+        ["Targeter"],
+        ["Psytrainer"]
     ];
 
     const words = name.split(/\s+/);
@@ -153,11 +156,9 @@ function moveLeadingClarifierToEnd(name) {
         "Radiator",
         "Blocks",
         "Turret",
-        "Targeter",
         "Pallet",
         "Crown",
-        "Techprint",
-        "Psytrainer",
+        "Techprint"
         
     ]);
 
