@@ -1,0 +1,358 @@
+---
+layout: default
+title: Kamo's TTK Store
+---
+
+{% include store_assets.html %}
+
+{%- assign itemsForDisplay = '' | split: ',' -%}
+{%- assign eventsForDisplay = site.data.StoreIncidents.incitems | where_exp: "incident", "incident.price > 0" | sort: "abr" -%}
+{%- assign animalsForDisplay = '' | split: ',' -%}
+{%- assign apparelForDisplay = '' | split: ',' -%}
+{%- assign traitsForDisplay = '' | split: ',' -%}
+{%- assign kindsForDisplay = site.data.ShopExt.races | where: "enabled", "true" | sort: "name" -%}
+{%- assign weaponsForDisplay = '' | split: ',' -%}
+
+{%- assign vePsycastsForDisplay = '' | split: ',' -%}
+{%- assign veAnimalsForDisplay = '' | split: ',' -%}
+{%- assign veWeaponsForDisplay = '' | split: ',' -%}
+{%- assign veCookingForDisplay = '' | split: ',' -%}
+{%- assign veBrewingForDisplay = '' | split: ',' -%}
+{%- assign veApparelForDisplay = '' | split: ',' -%}
+{%- assign veArmourForDisplay = '' | split: ',' -%}
+{%- assign veAndroidForDisplay = '' | split: ',' -%}
+{%- assign veAnimalsEndangeredForDisplay = '' | split: ',' -%}
+{%- assign vePlantsForDisplay = '' | split: ',' -%}
+{%- assign veAnimalsWasteForDisplay = '' | split: ',' -%}
+{%- assign veAnimalsRoyalForDisplay = '' | split: ',' -%}
+{%- assign veBooksForDisplay = '' | split: ',' -%}
+{%- assign veHairForDisplay = '' | split: ',' -%}
+
+{%- for item in site.data.StoreItems.items -%}
+{%- if item.price <= 0 -%}
+{%- continue -%}
+{%- endif -%}
+
+{%- assign itemdata = site.data.itemdata[item.defname] -%}
+{%- assign modName = itemdata.Mod -%}
+{%- assign categoryName = item.category | default: '' -%}
+{%- assign categoryDown = categoryName | downcase -%}
+{%- assign defNameDown = item.defname | default: '' | downcase -%}
+
+{%- if modName == 'Vanilla Psycasts Expanded' -%}
+{%- assign vePsycastsForDisplay = vePsycastsForDisplay | push: item -%}
+{%- elsif modName == 'Vanilla Animals Expanded' -%}
+{%- assign veAnimalsForDisplay = veAnimalsForDisplay | push: item -%}
+{%- elsif modName == 'Vanilla Weapons Expanded' -%}
+{%- assign veWeaponsForDisplay = veWeaponsForDisplay | push: item -%}
+{%- elsif modName == 'Vanilla Cooking Expanded' -%}
+{%- assign veCookingForDisplay = veCookingForDisplay | push: item -%}
+{%- elsif modName == 'Vanilla Brewing Expanded' -%}
+{%- assign veBrewingForDisplay = veBrewingForDisplay | push: item -%}
+{%- elsif modName == 'Vanilla Apparel Expanded' -%}
+{%- assign veApparelForDisplay = veApparelForDisplay | push: item -%}
+{%- elsif modName == 'Vanilla Armour Expanded' -%}
+{%- assign veArmourForDisplay = veArmourForDisplay | push: item -%}
+{%- elsif modName == 'Vanilla Races Expanded - Android' -%}
+{%- assign veAndroidForDisplay = veAndroidForDisplay | push: item -%}
+{%- elsif modName == 'Vanilla Animals Expanded — Endangered' -%}
+{%- assign veAnimalsEndangeredForDisplay = veAnimalsEndangeredForDisplay | push: item -%}
+{%- elsif modName == 'Vanilla Plants Expanded' -%}
+{%- assign vePlantsForDisplay = vePlantsForDisplay | push: item -%}
+{%- elsif modName == 'Vanilla Animals Expanded — Waste Animals' -%}
+{%- assign veAnimalsWasteForDisplay = veAnimalsWasteForDisplay | push: item -%}
+{%- elsif modName == 'Vanilla Animals Expanded — Royal Animals' -%}
+{%- assign veAnimalsRoyalForDisplay = veAnimalsRoyalForDisplay | push: item -%}
+{%- elsif modName == 'Vanilla Books Expanded' -%}
+{%- assign veBooksForDisplay = veBooksForDisplay | push: item -%}
+{%- elsif modName == 'Vanilla Hair Expanded' -%}
+{%- assign veHairForDisplay = veHairForDisplay | push: item -%}
+{%- endif -%}
+
+{%- assign isEggItem = false -%}
+{%- if categoryName contains 'Egg' -%}
+{%- assign isEggItem = true -%}
+{%- endif -%}
+
+{%- assign isApparelItem = false -%}
+{%- if defNameDown contains 'apparel' or categoryDown contains 'apparel' or categoryDown contains 'clothing' or categoryDown contains 'headgear' or categoryDown contains 'armor' or categoryDown contains 'armour' or categoryDown contains 'handwear' or categoryDown contains 'footwear' or categoryDown contains 'shield' or categoryDown contains 'onskin' or categoryDown contains 'overhead' or categoryDown contains 'middle' or categoryDown contains 'utility' -%}
+{%- assign isApparelItem = true -%}
+{%- endif -%}
+
+{%- if categoryName == 'Animals' or categoryName == 'Animal' or isEggItem -%}
+{%- assign animalsForDisplay = animalsForDisplay | push: item -%}
+{%- continue -%}
+{%- endif -%}
+
+{%- if isApparelItem -%}
+{%- assign apparelForDisplay = apparelForDisplay | push: item -%}
+{%- continue -%}
+{%- endif -%}
+
+{%- if itemdata.IsWeapon -%}
+{%- assign weaponsForDisplay = weaponsForDisplay | push: item -%}
+{%- continue -%}
+{%- endif -%}
+
+{%- assign itemsForDisplay = itemsForDisplay | push: item -%}
+{%- endfor -%}
+
+{%- assign itemsForDisplay = itemsForDisplay | sort: 'abr' -%}
+{%- assign animalsForDisplay = animalsForDisplay | sort: 'abr' -%}
+{%- assign apparelForDisplay = apparelForDisplay | sort: 'abr' -%}
+{%- assign weaponsForDisplay = weaponsForDisplay | sort: 'abr' -%}
+{%- assign vePsycastsForDisplay = vePsycastsForDisplay | sort: 'abr' -%}
+{%- assign veAnimalsForDisplay = veAnimalsForDisplay | sort: 'abr' -%}
+{%- assign veWeaponsForDisplay = veWeaponsForDisplay | sort: 'abr' -%}
+{%- assign veCookingForDisplay = veCookingForDisplay | sort: 'abr' -%}
+{%- assign veBrewingForDisplay = veBrewingForDisplay | sort: 'abr' -%}
+{%- assign veApparelForDisplay = veApparelForDisplay | sort: 'abr' -%}
+{%- assign veArmourForDisplay = veArmourForDisplay | sort: 'abr' -%}
+{%- assign veAndroidForDisplay = veAndroidForDisplay | sort: 'abr' -%}
+{%- assign veAnimalsEndangeredForDisplay = veAnimalsEndangeredForDisplay | sort: 'abr' -%}
+{%- assign vePlantsForDisplay = vePlantsForDisplay | sort: 'abr' -%}
+{%- assign veAnimalsWasteForDisplay = veAnimalsWasteForDisplay | sort: 'abr' -%}
+{%- assign veAnimalsRoyalForDisplay = veAnimalsRoyalForDisplay | sort: 'abr' -%}
+{%- assign veBooksForDisplay = veBooksForDisplay | sort: 'abr' -%}
+{%- assign veHairForDisplay = veHairForDisplay | sort: 'abr' -%}
+
+{%- for trait in site.data.ShopExt.traits -%}
+{%- if trait.canAdd == true or trait.canRemove == true -%}
+{%- assign traitsForDisplay = traitsForDisplay | push: trait | sort: "name" -%}
+{%- endif -%}
+{%- endfor -%}
+
+{%- assign buy = "" -%}
+{%- for command in site.data.commands -%}
+{%- if command.data.isBuy == true -%}
+{%- capture buy -%}
+{{- command.usage | split: " " | first -}}
+{%- endcapture -%}
+{%- break -%}
+{%- endif -%}
+{%- endfor -%}
+
+{%- assign itemHeaders = '' | split: ',' -%}
+{%- assign itemHeaders = itemHeaders | push: site.data.language.name_header -%}
+{%- assign itemHeaders = itemHeaders | push: site.data.language.cost_header -%}
+{%- if site.store.items.category -%}
+{%- assign itemHeaders = itemHeaders | push: site.data.language.category_header -%}
+{%- endif -%}
+{%- assign itemHeaders = itemHeaders | join: ',' -%}
+
+<div class="tab">
+    {%- if itemsForDisplay.size > 0 -%}
+    {%- include tab.html id='items' -%}
+    {%- endif -%}
+
+    {%- if eventsForDisplay.size > 0 -%}
+    {%- include tab.html id='events' -%}
+    {%- endif -%}
+
+    {%- if weaponsForDisplay.size > 0 -%}
+    {%- include tab.html id='weapons' -%}
+    {%- endif -%}
+
+    {%- if apparelForDisplay.size > 0 -%}
+    {%- include tab.html id='apparel' -%}
+    {%- endif -%}
+
+    {%- if animalsForDisplay.size > 0 -%}
+    {%- include tab.html id='animals' -%}
+    {%- endif -%}
+
+    {%- if traitsForDisplay.size > 0 -%}
+    {%- include tab.html id='traits' -%}
+    {%- endif -%}
+
+    {%- if kindsForDisplay.size > 0 -%}
+    {%- include tab.html id='kinds' -%}
+    {%- endif -%}
+
+    {%- if vePsycastsForDisplay.size > 0 -%}{%- include tab.html id='ve_psycasts' label='VE Psycasts' -%}{%- endif -%}
+    {%- if veAnimalsForDisplay.size > 0 -%}{%- include tab.html id='ve_animals' label='VE Animals' -%}{%- endif -%}
+    {%- if veAnimalsRoyalForDisplay.size > 0 -%}{%- include tab.html id='ve_animals_royal' label='VE Royal Animals' -%}{%- endif -%}
+    {%- if veAnimalsEndangeredForDisplay.size > 0 -%}{%- include tab.html id='ve_animals_endangered' label='VE Endangered Animals' -%}{%- endif -%}
+    {%- if veAnimalsWasteForDisplay.size > 0 -%}{%- include tab.html id='ve_animals_waste' label='VE Waste Animals' -%}{%- endif -%}
+    {%- if veWeaponsForDisplay.size > 0 -%}{%- include tab.html id='ve_weapons' label='VE Weapons' -%}{%- endif -%}
+    {%- if veCookingForDisplay.size > 0 -%}{%- include tab.html id='ve_cooking' label='VE Cooking' -%}{%- endif -%}
+    {%- if veBrewingForDisplay.size > 0 -%}{%- include tab.html id='ve_brewing' label='VE Brewing' -%}{%- endif -%}
+    {%- if veApparelForDisplay.size > 0 -%}{%- include tab.html id='ve_apparel' label='VE Apparel' -%}{%- endif -%}
+    {%- if veArmourForDisplay.size > 0 -%}{%- include tab.html id='ve_armour' label='VE Armour' -%}{%- endif -%}
+    {%- if veAndroidForDisplay.size > 0 -%}{%- include tab.html id='ve_android' label='VE Android' -%}{%- endif -%}
+    {%- if vePlantsForDisplay.size > 0 -%}{%- include tab.html id='ve_plants' label='VE Plants' -%}{%- endif -%}
+    {%- if veBooksForDisplay.size > 0 -%}{%- include tab.html id='ve_books' label='VE Books' -%}{%- endif -%}
+    {%- if veHairForDisplay.size > 0 -%}{%- include tab.html id='ve_hair' label='VE Hair' -%}{%- endif -%}
+</div>
+
+{%- if itemsForDisplay.size > 0 -%}
+{%- include store_tab.html
+id='items'
+type='Item'
+buyName=buy
+headers=itemHeaders
+priceDataHeaders='Cost'
+displayData=itemsForDisplay
+placeholder=site.data.language.search_items -%}
+{%- endif -%}
+
+{%- if eventsForDisplay.size > 0 -%}
+{% capture headers %}
+{{ site.data.language.name_header }},{{ site.data.language.cost_header }},{{ site.data.language.karma_type_header }}
+{% endcapture %}
+
+{%- include store_tab.html
+id='events'
+type='Event'
+buyName=buy
+headers=headers
+karmaHeaders=site.data.language.karma_type_header
+displayData=eventsForDisplay
+placeholder=site.data.language.search_events -%}
+{%- endif -%}
+
+{%- if weaponsForDisplay.size > 0 -%}
+{% capture headers %}
+{{ site.data.language.name_header }},{{ site.data.language.cost_header }}
+{% endcapture %}
+
+{%- include store_tab.html
+id='weapons'
+type='Weapon'
+buyName=buy
+headers=headers
+priceDataHeaders=site.data.language.cost_header
+displayData=weaponsForDisplay
+placeholder=site.data.language.search_weapons -%}
+{%- endif -%}
+
+{%- if apparelForDisplay.size > 0 -%}
+{%- include store_tab.html
+id='apparel'
+type='Item'
+buyName=buy
+headers=itemHeaders
+priceDataHeaders='Cost'
+displayData=apparelForDisplay
+placeholder='Search for apparel...' -%}
+{%- endif -%}
+
+{%- if animalsForDisplay.size > 0 -%}
+{% capture headers %}
+{{ site.data.language.name_header }},{{ site.data.language.cost_header }}
+{% endcapture %}
+
+{%- include store_tab.html
+id='animals'
+type='Animal'
+buyName=buy
+headers=headers
+priceDataHeaders=site.data.language.cost_header
+displayData=animalsForDisplay
+placeholder=site.data.language.search_animals -%}
+{%- endif -%}
+
+{%- if traitsForDisplay.size > 0 -%}
+{%- assign headers = site.data.language.name_header | split: ',' -%}
+
+{%- if site.store.traits.description or site.store.traits.conflicts or site.store.traits.stats or site.store.traits.limit -%}
+{%- assign headers = headers | push: site.data.language.description_header -%}
+{%- endif -%}
+
+{%- assign headers = headers | push: site.data.language.add_cost_header -%}
+{%- assign headers = headers | push: site.data.language.remove_cost_header -%}
+{%- assign headers = headers | join: ',' -%}
+
+{% capture priceDataHeaders %}
+{{ site.data.language.add_cost_header }},{{ site.data.language.remove_cost_header }}
+{% endcapture %}
+
+{%- include store_tab.html
+id='traits'
+type='Trait'
+buyName=buyName
+priceDataHeaders=priceDataHeaders
+headers=headers
+displayData=traitsForDisplay
+placeholder=site.data.language.search_traits -%}
+{%- endif -%}
+
+{%- if kindsForDisplay.size > 0 -%}
+{% capture headers %}
+{{ site.data.language.name_header }},{{ site.data.language.cost_header }}
+{% endcapture %}
+
+{%- include store_tab.html
+id='kinds'
+type='Pawn'
+buyName=buyName
+priceDataHeaders=site.data.language.price_header
+headers=headers
+displayData=kindsForDisplay
+placeholder=site.data.language.search_pawn_kinds -%}
+{%- endif -%}
+
+{%- assign veTabs = '' | split: ',' -%}
+
+{%- if vePsycastsForDisplay.size > 0 -%}{%- include store_tab.html id='ve_psycasts' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=vePsycastsForDisplay placeholder='Search VE Psycasts...' -%}{%- endif -%}
+{%- if veAnimalsForDisplay.size > 0 -%}{%- include store_tab.html id='ve_animals' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veAnimalsForDisplay placeholder='Search VE Animals...' -%}{%- endif -%}
+{%- if veAnimalsRoyalForDisplay.size > 0 -%}{%- include store_tab.html id='ve_animals_royal' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veAnimalsRoyalForDisplay placeholder='Search VE Royal Animals...' -%}{%- endif -%}
+{%- if veAnimalsEndangeredForDisplay.size > 0 -%}{%- include store_tab.html id='ve_animals_endangered' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veAnimalsEndangeredForDisplay placeholder='Search VE Endangered Animals...' -%}{%- endif -%}
+{%- if veAnimalsWasteForDisplay.size > 0 -%}{%- include store_tab.html id='ve_animals_waste' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veAnimalsWasteForDisplay placeholder='Search VE Waste Animals...' -%}{%- endif -%}
+{%- if veWeaponsForDisplay.size > 0 -%}{%- include store_tab.html id='ve_weapons' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veWeaponsForDisplay placeholder='Search VE Weapons...' -%}{%- endif -%}
+{%- if veCookingForDisplay.size > 0 -%}{%- include store_tab.html id='ve_cooking' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veCookingForDisplay placeholder='Search VE Cooking...' -%}{%- endif -%}
+{%- if veBrewingForDisplay.size > 0 -%}{%- include store_tab.html id='ve_brewing' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veBrewingForDisplay placeholder='Search VE Brewing...' -%}{%- endif -%}
+{%- if veApparelForDisplay.size > 0 -%}{%- include store_tab.html id='ve_apparel' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veApparelForDisplay placeholder='Search VE Apparel...' -%}{%- endif -%}
+{%- if veArmourForDisplay.size > 0 -%}{%- include store_tab.html id='ve_armour' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veArmourForDisplay placeholder='Search VE Armour...' -%}{%- endif -%}
+{%- if veAndroidForDisplay.size > 0 -%}{%- include store_tab.html id='ve_android' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veAndroidForDisplay placeholder='Search VE Android...' -%}{%- endif -%}
+{%- if vePlantsForDisplay.size > 0 -%}{%- include store_tab.html id='ve_plants' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=vePlantsForDisplay placeholder='Search VE Plants...' -%}{%- endif -%}
+{%- if veBooksForDisplay.size > 0 -%}{%- include store_tab.html id='ve_books' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veBooksForDisplay placeholder='Search VE Books...' -%}{%- endif -%}
+{%- if veHairForDisplay.size > 0 -%}{%- include store_tab.html id='ve_hair' type='Item' buyName=buy headers=itemHeaders priceDataHeaders='Cost' displayData=veHairForDisplay placeholder='Search VE Hair...' -%}{%- endif -%}
+
+<script>
+    window.addEventListener("load", function (event) {
+        let e;
+        let i;
+        let query = "";
+        let queryStarted = false;
+        const tab = "items";
+        const url = document.URL;
+
+        for (i = 0; i < url.length; i++) {
+            e = url[i];
+
+            if (e === "?") {
+                queryStarted = true;
+                continue;
+            }
+
+            if (e === "#" || e === "/") {
+                queryStarted = false;
+                continue;
+            }
+
+            if (queryStarted) {
+                query = query + e;
+            }
+        }
+
+        if (query.length <= 0) {
+            return document.getElementsByClassName("tabLinks")[0].click();
+        }
+
+        const segments = query.split("&");
+        for (i = 0; i < segments.length; i++) {
+            e = segments[i].split('=');
+
+            if (e[1] == null || e[1] === "") {
+                continue;
+            }
+
+            if (e[0].toUpperCase() === "TAB") {
+                return changeTab({currentTarget: document.getElementById(e[1])}, e[1])
+            }
+        }
+
+        return document.getElementsByClassName("tabLinks")[0].click();
+    });
+</script>
