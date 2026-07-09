@@ -44,6 +44,13 @@ function shouldUseCommandNameAsDisplay(rawDisplayName, rawCommandName) {
     return rawCommandName && (startsWithSpecialPrefix || isHarMeat);
 }
 
+function isHarMeatDisplayName(displayName) {
+    return (
+        /^HAR\s+(CO\s+Race|EL\s+Monster).*Meat$/i.test(displayName) ||
+        /^Meat[_\s]+HAR[_\s]+(CO[_\s]+Race|EL[_\s]+Monster)/i.test(displayName)
+    );
+}
+
 function applyManualCommandSpacing(name) {
     const manualRules = [
         // evedkerenofthedragon -> Evedkeren of the Dragon
@@ -336,10 +343,7 @@ window.addEventListener("DOMContentLoaded", function () {
         const displayName = element.textContent.trim();
         const commandName = element.dataset.commandName || "";
 
-        const isHarMeat =
-            /^HAR\s+(CO\s+Race|EL\s+Monster).*Meat$/i.test(displayName);
-
-        if (isHarMeat && commandName) {
+        if (isHarMeatDisplayName(displayName) && commandName) {
             element.textContent = humanizeStoreName(commandName, "");
             return;
         }
