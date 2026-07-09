@@ -334,7 +334,17 @@ function moveLeadingClarifierToEnd(name) {
 
 window.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".store-display-name").forEach(function (element) {
+        const displayName = element.textContent.trim();
         const commandName = element.dataset.commandName || "";
-        element.textContent = humanizeStoreName(element.textContent, commandName);
+
+        const isHarMeat =
+            /^HAR\s+(CO\s+Race|EL\s+Monster).*Meat$/i.test(displayName);
+
+        if (isHarMeat && commandName) {
+            element.textContent = humanizeStoreName(commandName, "");
+            return;
+        }
+
+        element.textContent = humanizeStoreName(displayName, commandName);
     });
 });
