@@ -204,7 +204,8 @@ function removeDisplayOnlyTags(name) {
             "Headgear",
             "Handwear",
             "Building",
-            "Relic Inert",
+            "Relic",
+            "Inert",
             "Simple",
             "Mawy",
             "Industrial"
@@ -253,9 +254,7 @@ function movePriorityTagsToFront(name) {
 function moveLeadingTagsToEnd(name) {
     const tagPhrases = [
         ["Animal", "Vaccine"],
-        ["Vaccine"],
-        ["Targeter"],
-        ["Psytrainer"]
+        ["Vaccine"]
     ];
 
     const words = name.split(/\s+/);
@@ -310,7 +309,7 @@ function moveLeadingClarifierToEnd(name) {
         "Shell",
         "Subcore",
         "Medicine",
-        "Mech Serum",
+        "MechSerum",
         "Pack",
         "Sculpture",
         "Nature Shrine",
