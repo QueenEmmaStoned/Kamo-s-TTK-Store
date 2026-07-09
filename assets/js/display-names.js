@@ -10,9 +10,31 @@ function humanizeStoreName(text) {
         .replace(/\s+/g, " ")
         .trim();
 
+    name = reorderEggName(name);
     name = moveLeadingClarifierToEnd(name);
 
     return name;
+}
+
+function reorderEggName(name) {
+    const words = name.split(/\s+/);
+
+    const eggIndex = words.indexOf("Egg");
+    const statusIndex = words.findIndex(word =>
+        word === "Fertilized" || word === "Unfertilized"
+    );
+
+    if (eggIndex === -1 || statusIndex === -1) {
+        return name;
+    }
+
+    const status = words[statusIndex];
+
+    const remainingWords = words.filter((word, index) =>
+        index !== eggIndex && index !== statusIndex
+    );
+
+    return [status, ...remainingWords, "Egg"].join(" ");
 }
 
 function moveLeadingClarifierToEnd(name) {
