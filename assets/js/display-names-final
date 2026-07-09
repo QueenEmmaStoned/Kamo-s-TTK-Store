@@ -346,7 +346,8 @@ function removeDisplayOnlyTags(name) {
         ["Relic"],
         ["Inert"],
         ["Mawy"],
-        ["Industrial"]
+        ["Industrial"],
+        ["MEV"]
     ];
 
     return removeTagPhrases(name, tagPhrases);
@@ -403,6 +404,14 @@ function moveArmorHelmetToEnd(name) {
 
 function moveHatToEnd(name) {
     return moveWordsToEnd(name, ["Hat"]);
+}
+
+function moveUniqueToFront(name) {
+    return moveWordsToFront(name, ["Unique"]);
+}
+
+function moveTargeterToEnd(name) {
+    return moveWordsToEnd(name, ["Targeter"]);
 }
 
 function moveWordsToFront(name, wordsToMove) {
@@ -518,8 +527,6 @@ function moveLeadingClarifierToEnd(name) {
     }
 
     const leadingClarifiers = new Set([
-        "meat",
-        "leather",
         "wool",
         "egg",
         "meal",
@@ -534,7 +541,20 @@ function moveLeadingClarifierToEnd(name) {
         "turret",
         "pallet",
         "crown",
-        "techprint"
+        "techprint",
+        "cat",
+        "wolf",
+        "bear",
+        "fox",
+        "bow",
+        "giraffe",
+        "soup",
+        "pangolin",
+        "hedgehog",
+        "meat",
+        "leather",
+        "targeter",
+        "helmet"
     ]);
 
     const firstWord = words[0];
@@ -706,7 +726,6 @@ function splitKnownSuffix(text) {
         "blouse",
         "dress",
         "helmet",
-        "helment",
         "armor",
         "shirt",
         "pants",
