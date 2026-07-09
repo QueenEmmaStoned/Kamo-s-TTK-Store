@@ -4,6 +4,7 @@ events_tab: 'Events'
 traits_tab: 'Traits'
 animals_tab: 'Animals'
 weapons_tab: 'Weapons'
+apparel_tab: 'Apparel'
 pawn_kinds_tab: 'Pawn Kinds'
 
 # Table headers
