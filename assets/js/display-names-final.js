@@ -84,7 +84,7 @@ function applySharedFinalRules(name, rawDisplayName, rawCommandName, rawModName)
     name = moveArmorHelmetToEnd(name);
     name = moveHatToEnd(name);
     name = moveUniqueToFront(name);
-    name = moreTargeterToEnd(name);
+    name = moveTargeterToEnd(name);
     name = moveSizeQualifiersToEnd(name);
     name = removeDuplicateWords(name);
     name = capitalizeSingleWordEvelietName(name, rawDisplayName, rawModName);
