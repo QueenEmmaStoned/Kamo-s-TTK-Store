@@ -1,4 +1,4 @@
-function humanizeStoreName(text) {
+function humanizeStoreName(text, commandName) {
     if (!text) {
         return "";
     }
