@@ -26,7 +26,7 @@ function humanizeStoreName(text, commandName) {
     name = normalizeNameSpacing(name);
 
     if (usingCommandName) {
-        name = capitalizeSingleWordEvelietName(name, rawDisplayName);
+        name = restoreCommandPunctuation(name, rawCommandName);
         return finalClean(name);
     }
 
@@ -42,11 +42,16 @@ function humanizeStoreName(text, commandName) {
     }
 
     name = addArtificialFromCommandName(name, rawCommandName);
+    name = capitalizePawnKindEntry(name, rawDisplayName, rawCommandName);
     name = moveSlaveToFront(name);
     name = moveSmallToFront(name);
+    name = moveArmorHelmetToEnd(name);
     name = moveHatToEnd(name);
-    name = capitalizeSingleWordEvelietName(name, rawDisplayName);
-
+    name = moveTargeterToEnd(name);
+    name = moveUniqueToFront(name);
+    name = moveSizeQualifiersToEnd(name);
+    name = removeDuplicateWords(name);
+    
     return finalClean(name);
 }
 
@@ -56,6 +61,7 @@ function finalClean(name) {
         .replace(/\s+\)/g, ")")
         .replace(/\(\s+/g, "(")
         .replace(/\s+-\s+/g, " - ")
+        .replace(/\s+:\s+/g, " : ")
         .trim();
 }
 
@@ -249,6 +255,7 @@ function removeDisplayOnlyTags(name) {
         ["VCE"],
         ["VREA"],
         ["MP"],
+        ["MVE"]
         ["AT"],
         ["SAB"],
         ["LWM"],
@@ -321,6 +328,18 @@ function moveSmallToFront(name) {
 
 function moveHatToEnd(name) {
     return moveWordsToEnd(name, ["Hat"]);
+}
+
+function moveArmorHelmetToEnd(name) {
+    return moveWordsToEnd(name, ["Armor", "Helmet"]);
+}
+
+function moveTargeterToEnd(name) {
+    return moveWordsToEnd(name, ["Targeter"]);
+}
+
+function moveUniqueToFront(name) {
+    return moveWordsToFront(name, ["Unique"]);
 }
 
 function moveWordsToFront(name, wordsToMove) {
@@ -440,6 +459,15 @@ function moveLeadingClarifierToEnd(name) {
     }
 
     const leadingClarifiers = new Set([
+        "cat";
+        "bear",
+        "wolf",
+        "fox",
+        "bow",
+        "giraffe",
+        "soup",
+        "pangolin",
+        "hedgehog",
         "meat",
         "leather",
         "wool",
@@ -455,8 +483,7 @@ function moveLeadingClarifierToEnd(name) {
         "blocks",
         "turret",
         "pallet",
-        "crown",
-        "techprint"
+        "crown"
     ]);
 
     const firstWord = words[0];
@@ -545,20 +572,6 @@ function isDbhStuffItem(rawDisplayName, rawCommandName) {
     return displayLooksDbh && commandLooksStuff;
 }
 
-function capitalizeSingleWordEvelietName(name, rawDisplayName) {
-    const isEveliet =
-        /\bHAR\b/i.test(rawDisplayName || "") ||
-        /\bAya\b/i.test(rawDisplayName || "");
-
-    const isSingleWord = /^[a-z]+$/i.test(name);
-
-    if (isEveliet && isSingleWord) {
-        return capitalizeFirstLetter(name);
-    }
-
-    return name;
-}
-
 function titleCaseKnownWords(text) {
     let spaced = splitKnownSuffix(String(text || ""));
     spaced = normalizeNameSpacing(spaced);
@@ -568,6 +581,49 @@ function titleCaseKnownWords(text) {
         .filter(Boolean)
         .map(capitalizeFirstLetter)
         .join(" ");
+}
+
+function removeDuplicateWords(name) {
+    const words = name.split(/\s+/).filter(Boolean);
+    const cleanedWords = [];
+
+    for (const word of words) {
+        const previousWord = cleanedWords[cleanedWords.length - 1];
+
+        if (previousWord && previousWord.toLowerCase() === word.toLowerCase()) {
+            continue;
+        }
+
+        cleanedWords.push(word);
+    }
+
+    return cleanedWords.join(" ");
+}
+
+function moveSizeQualifiersToEnd(name) {
+    const compactMatch = name.match(/^(.*?)(1x1|1x2|2x2|2x4|3x3)c?$/i);
+
+    if (compactMatch && compactMatch[1].trim()) {
+        const base = titleCaseKnownWords(compactMatch[1]);
+        const suffix = /c$/i.test(name) ? " c" : "";
+        const size = compactMatch[2].toLowerCase();
+
+        return base + suffix + " (" + size + ")";
+    }
+
+    const words = name.split(/\s+/).filter(Boolean);
+    const sizeIndex = words.findIndex(function (word) {
+        return /^(Broad|Medium|1x1|1x2|2x2|2x4|3x3)$/i.test(word);
+    });
+
+    if (sizeIndex === -1) {
+        return name;
+    }
+
+    const size = words.splice(sizeIndex, 1)[0];
+    const formattedSize = /x/i.test(size) ? size.toLowerCase() : capitalizeFirstLetter(size);
+
+    return words.join(" ") + " (" + formattedSize + ")";
 }
 
 function splitKnownSuffix(text) {
@@ -613,6 +669,48 @@ function splitKnownSuffix(text) {
     }
 
     return text;
+}
+
+function restoreCommandPunctuation(name, rawCommandName) {
+    if (!rawCommandName) {
+        return name;
+    }
+
+    if (rawCommandName.includes("-")) {
+        name = rawCommandName
+            .replace(/_/g, " ")
+            .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+            .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
+            .replace(/\s+/g, " ")
+            .trim();
+
+        return titleCaseKnownWords(name);
+    }
+
+    if (rawCommandName.includes("'") || rawCommandName.includes("’")) {
+        name = rawCommandName
+            .replace(/_/g, " ")
+            .replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+            .replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
+            .replace(/\s+/g, " ")
+            .trim();
+
+        return titleCaseKnownWords(name);
+    }
+
+    return name;
+}
+
+function capitalizePawnKindEntry(name, rawDisplayName, rawCommandName) {
+    const isPawnKind = /pawn\s*kind|pawnkind|pawn\s*type|pawntype/i.test(
+        [rawDisplayName, rawCommandName].join(" ")
+    );
+
+    if (!isPawnKind) {
+        return name;
+    }
+
+    return titleCaseKnownWords(name);
 }
 
 function capitalizeFirstLetter(word) {
