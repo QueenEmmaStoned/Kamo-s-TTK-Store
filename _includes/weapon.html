@@ -18,7 +18,12 @@
             {%- endif -%}
         {%- endcapture -%}
 
-        <span class="store-display-name">{{- displayName -}}</span>
+        <span
+            class="store-display-name"
+            data-command-name="{{ commandName | strip | escape }}"
+        >
+            {{- displayName -}}
+        </span>
 
         {%- if site.store.items.mod -%}
             <br/>
