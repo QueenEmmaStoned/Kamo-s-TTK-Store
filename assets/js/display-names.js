@@ -121,6 +121,10 @@ function shouldUseCommandNameForMismatch(rawDisplayName, rawCommandName) {
         return false;
     }
 
+    if (isEggItem(rawDisplayName, rawCommandName)) {
+        return false;
+    }
+
     if (displayNameMatchesCommandName(rawDisplayName, rawCommandName)) {
         return false;
     }
@@ -199,6 +203,19 @@ function isHarMeatDisplayName(displayName) {
 function isEggBoxName(name, rawCommandName) {
     return (
         /^Egg\s+Box\b/i.test(name) ||
+        /eggbox/i.test(rawCommandName || "")
+    );
+}
+
+function isEggItem(rawDisplayName, rawCommandName) {
+    const normalizedName = normalizeNameSpacing(
+        [rawDisplayName || "", rawCommandName || ""].join(" ")
+    );
+
+    return (
+        /\bEgg\b/i.test(normalizedName) ||
+        /\bFertilized\b/i.test(normalizedName) ||
+        /\bUnfertilized\b/i.test(normalizedName) ||
         /eggbox/i.test(rawCommandName || "")
     );
 }
@@ -795,8 +812,7 @@ function splitKnownSuffix(text) {
         "strap",
         "blouse",
         "dress",
-        "pill",
-        "mush"
+        "pill"
     ];
 
     let remaining = String(text || "");
