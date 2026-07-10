@@ -764,8 +764,6 @@ function splitKnownSuffix(text) {
         return [remaining, ...suffixParts]
             .filter(Boolean)
             .join(" ");
-    }
-    return text;
 }
 
 function restoreCommandPunctuation(name, rawCommandName) {
