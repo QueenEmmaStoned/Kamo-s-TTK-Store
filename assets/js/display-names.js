@@ -864,7 +864,7 @@ function splitKnownSuffix(text) {
         "light",
         "helmet",
         "armor",
-        "tshirt"
+        "tshirt",
         "shirt",
         "pants",
         "vest",
