@@ -181,7 +181,7 @@ function formatSpecialCommandName(rawDisplayName, rawCommandName) {
 
     if (shouldUseCommandNameForDbhStuffOrHyphen(rawDisplayName, rawCommandName)) {
     return titleCaseKnownWords(rawCommandName);
-}
+    }
 
     return titleCaseKnownWords(rawCommandName);
 }
@@ -293,6 +293,12 @@ function applyManualCommandSpacing(name) {
                 return "Dragonian " + titleCaseKnownWordsWithParenthetical(itemName);
             }
         }
+        {
+            pattern: /^evelieten(.+)$/i,
+            replace: function (match, itemName) {
+                return "Evelieten " + titleCaseKnownWordsWithParenthetical(itemName);
+            }
+        }
     ];
 
     for (const rule of manualRules) {
@@ -345,8 +351,7 @@ function removeDisplayOnlyTags(name) {
         ["Inert"],
         ["Mawy"],
         ["Industrial"],
-        ["Log"],
-        ["Psychic"]
+        ["Log"]
     ];
 
     return removeTagPhrases(name, tagPhrases);
@@ -533,6 +538,10 @@ function moveLeadingClarifierToEnd(name) {
         "wolf",
         "bear",
         "fox",
+        "ferret",
+        "pangolin",
+        "dryad",
+        "sealion",
         "leather",
         "fur",
         "wool",
@@ -544,12 +553,11 @@ function moveLeadingClarifierToEnd(name) {
         "medicine",
         "pack",
         "sculpture",
-        "radiator",
         "blocks",
         "turret",
         "pallet",
         "crown",
-        "soup"
+        "steel"
     ]);
 
     const firstWord = words[0];
@@ -738,7 +746,12 @@ function applyKnownCompoundSpacing(text) {
         .replace(/mechaniteoverride/gi, "mechanite override")
         .replace(/infantillness/gi, "infant illness")
         .replace(/muscleparasites/gi, "muscle parasites")
-        .replace(/schooluniform/gi, "school uniform");
+        .replace(/schooluniform/gi, "school uniform")
+        .replace(/gojuice/gi, "go-juice")
+        .replace(/wakeup/gi, "wake-up")
+        .replace(/babycarrier/gi, "baby carrier")
+        .replace(/babysling/gi, "baby sling")
+        .replace(/tshirt/gi, "t-shirt");
     
 }
 
@@ -767,12 +780,12 @@ function moveSizeQualifiersToEnd(name) {
         const suffix = /c$/i.test(name) ? " c" : "";
         const size = compactMatch[2].toLowerCase();
 
-        return base + suffix + " (" + size + ")";
+        return base + suffix + "  (" + size + ")";
     }
 
     const words = name.split(/\s+/).filter(Boolean);
     const sizeIndex = words.findIndex(function (word) {
-        return /^(Broad|Medium|1x1|1x2|2x2|2x4|3x3)$/i.test(word);
+        return /^(Broad|Medium|Standard|High|1x1|1x2|2x2|2x4|3x3)$/i.test(word);
     });
 
     if (sizeIndex === -1) {
@@ -851,8 +864,7 @@ function commandNameHasKnownSuffix(rawCommandName) {
         "lab",
         "fridge",
         "aircon",
-        "basin",
-        "bathtub",
+        "sauna",
         "heater",
         "shower",
         "toilet",
@@ -860,7 +872,14 @@ function commandNameHasKnownSuffix(rawCommandName) {
         "freezer",
         "machine",
         "human",
-        "fur"
+        "fur",
+        "fan",
+        "shadow",
+        "stock",
+        "throne",
+        "opium",
+        "meal",
+        "radiator"
     ];
 
     return knownSuffixes.some(function (suffix) {
@@ -929,17 +948,22 @@ function splitKnownSuffix(text) {
         "lab",
         "fridge",
         "aircon",
-        "basin",
-        "bathtub",
+        "sauna",
         "heater",
         "shower",
         "toilet",
-        "towel",
         "freezer",
         "machine",
         "human",
         "leather",
-        "fur"
+        "fur",
+        "fan",
+        "shadow",
+        "stock",
+        "throne",
+        "opium",
+        "meal",
+        "radiator"
     ];
 
     let remaining = String(text || "");
