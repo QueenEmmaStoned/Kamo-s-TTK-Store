@@ -125,7 +125,17 @@ function shouldUseCommandNameForMismatch(rawDisplayName, rawCommandName) {
         return false;
     }
 
-    return true;
+    return commandNameLooksHumanizable(rawCommandName);
+}
+
+function commandNameLooksHumanizable(rawCommandName) {
+    const commandName = String(rawCommandName || "");
+
+    return (
+        /[_\-\s()'’]/.test(commandName) ||
+        /[a-z0-9][A-Z]/.test(commandName) ||
+        commandNameHasKnownSuffix(commandName)
+    );
 }
 
 function shouldUseCommandNameForTable(rawDisplayName, rawCommandName) {
@@ -692,6 +702,59 @@ function moveSizeQualifiersToEnd(name) {
     return words.join(" ") + " (" + formattedSize + ")";
 }
 
+function commandNameHasKnownSuffix(rawCommandName) {
+    const commandName = String(rawCommandName || "").toLowerCase();
+
+    const knownSuffixes = [
+        "advancedcomponent",
+        "component",
+        "treatmentpill",
+        "medicine",
+        "neutralizer",
+        "stabilizer",
+        "vaccine",
+        "stuffed",
+        "stuff",
+        "table",
+        "chair",
+        "bed",
+        "door",
+        "wall",
+        "floor",
+        "lamp",
+        "light",
+        "helmet",
+        "armor",
+        "shirt",
+        "pants",
+        "robe",
+        "cape",
+        "hood",
+        "mask",
+        "veil",
+        "coat",
+        "jacket",
+        "boots",
+        "gloves",
+        "hat",
+        "crown",
+        "collar",
+        "belt",
+        "strap",
+        "blouse",
+        "dress",
+        "pill",
+        "meat",
+        "leather",
+        "wool",
+        "egg"
+    ];
+
+    return knownSuffixes.some(function (suffix) {
+        return commandName.endsWith(suffix) && commandName.length > suffix.length;
+    });
+}
+
 function splitKnownSuffix(text) {
     const knownSuffixes = [
         "advancedcomponent",
@@ -732,7 +795,8 @@ function splitKnownSuffix(text) {
         "strap",
         "blouse",
         "dress",
-        "pill"
+        "pill",
+        "mush"
     ];
 
     let remaining = String(text || "");
