@@ -269,6 +269,11 @@ function applyManualCommandSpacing(name) {
             pattern: /^arachne(.+)$/i,
             replace: function (match, itemName) {
                 return "Arachne " + titleCaseKnownWords(itemName);
+        },
+        {
+            pattern: /^ishmutian(.+)$/i,
+            replace: function (match, itemName) {
+                return "Ishmutian " + titleCaseKnownWords(itemName);
         }
 },
     ];
