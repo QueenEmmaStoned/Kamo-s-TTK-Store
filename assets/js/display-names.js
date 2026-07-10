@@ -292,7 +292,7 @@ function applyManualCommandSpacing(name) {
             replace: function (match, itemName) {
                 return "Dragonian " + titleCaseKnownWordsWithParenthetical(itemName);
             }
-        }
+        },
         {
             pattern: /^evelieten(.+)$/i,
             replace: function (match, itemName) {
