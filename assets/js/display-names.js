@@ -30,6 +30,7 @@ function humanizeStoreName(text, commandName) {
 
     if (usingCommandName) {
         name = restoreCommandPunctuation(name, rawCommandName);
+        name = titleCaseKnownWords(name);
     }
 
     name = removeDisplayOnlyTags(name);
@@ -53,6 +54,7 @@ function humanizeStoreName(text, commandName) {
     name = moveUniqueToFront(name);
     name = moveSizeQualifiersToEnd(name);
     name = removeDuplicateWords(name);
+    name = capitalizeDisplayWords(name);
     
     return finalClean(name);
 }
@@ -692,10 +694,24 @@ function moveSizeQualifiersToEnd(name) {
 
 function splitKnownSuffix(text) {
     const knownSuffixes = [
+        "advancedcomponent",
+        "component",
+        "medicine",
+        "treatmentpill",
         "bodystrap",
-        "strap",
-        "blouse",
-        "dress",
+        "neutralizer",
+        "stabilizer",
+        "vaccine",
+        "stuffed",
+        "stuff",
+        "table",
+        "chair",
+        "bed",
+        "door",
+        "wall",
+        "floor",
+        "lamp",
+        "light",
         "helmet",
         "armor",
         "shirt",
@@ -713,25 +729,42 @@ function splitKnownSuffix(text) {
         "crown",
         "collar",
         "belt",
-        "table",
-        "pill",
-        "vaccine",
-        "neutralizer",
-        "stabilizer",
-        "stuffed",
-        "stuff"
+        "strap",
+        "blouse",
+        "dress",
+        "pill"
     ];
 
-    const lowerText = text.toLowerCase();
+    let remaining = String(text || "");
+    const suffixParts = [];
+    let changed = true;
 
-    for (const suffix of knownSuffixes) {
-        if (lowerText.endsWith(suffix) && lowerText.length > suffix.length) {
-            const firstPart = text.slice(0, text.length - suffix.length);
-            const lastPart = text.slice(text.length - suffix.length);
-            return firstPart + " " + lastPart;
+    while (changed) {
+        changed = false;
+
+        const lowerText = remaining.toLowerCase();
+
+        for (const suffix of knownSuffixes) {
+            if (lowerText === suffix) {
+                continue;
+            }
+
+            if (lowerText.endsWith(suffix) && remaining.length > suffix.length) {
+                const firstPart = remaining.slice(0, remaining.length - suffix.length);
+                const lastPart = remaining.slice(remaining.length - suffix.length);
+
+                remaining = firstPart;
+                suffixParts.unshift(lastPart);
+                changed = true;
+                break;
+            }
         }
     }
 
+    return [remaining, ...suffixParts]
+        .filter(Boolean)
+        .join(" ");
+}
     return text;
 }
 
@@ -783,6 +816,20 @@ function capitalizeFirstLetter(word) {
     }
 
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+}
+
+function capitalizeDisplayWords(name) {
+    return String(name || "")
+        .split(/\s+/)
+        .filter(Boolean)
+        .map(capitalizeDisplayToken)
+        .join(" ");
+}
+
+function capitalizeDisplayToken(token) {
+    return String(token || "").replace(/^([("'[]*)([a-z])/, function (match, prefix, letter) {
+        return prefix + letter.toUpperCase();
+    });
 }
 
 function getMismatchedCommandNameOverride(rawDisplayName, rawCommandName) {
