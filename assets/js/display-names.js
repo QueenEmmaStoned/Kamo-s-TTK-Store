@@ -276,6 +276,12 @@ function applyManualCommandSpacing(name) {
             }
         },
         {
+            pattern: /^ishmutianchild['’]?s\s*(.+)$/i,
+            replace: function (match, itemName) {
+                return "Ishmutian Child's " + titleCaseKnownWords(itemName);
+            }
+        },
+        {
             pattern: /^ishmutian(.+)$/i,
             replace: function (match, itemName) {
                 return "Ishmutian " + titleCaseKnownWords(itemName);
@@ -290,7 +296,7 @@ function applyManualCommandSpacing(name) {
         {
             pattern: /^dragonian(.+)$/i,
             replace: function (match, itemName) {
-                return "Dragonian " + titleCaseKnownWords(itemName);
+                return "Dragonian " + titleCaseKnownWordsWithParenthetical(itemName);
             }
         }
     ];
@@ -707,6 +713,19 @@ function titleCaseKnownWords(text) {
         .join(" ");
 }
 
+function titleCaseKnownWordsWithParenthetical(text) {
+    const raw = String(text || "").trim();
+    const match = raw.match(/^(.+?)\((.+?)\)$/);
+
+    if (!match) {
+        return titleCaseKnownWords(raw);
+    }
+
+    const baseName = titleCaseKnownWords(match[1]);
+    const parenthetical = titleCaseKnownWords(match[2]);
+
+    return baseName + " (" + parenthetical + ")";
+}
 function removeDuplicateWords(name) {
     const words = name.split(/\s+/).filter(Boolean);
     const cleanedWords = [];
