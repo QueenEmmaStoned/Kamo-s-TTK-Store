@@ -211,7 +211,11 @@ function isEggItem(rawDisplayName, rawCommandName) {
         /\bEgg\b/i.test(normalizedName) ||
         /\bFertilized\b/i.test(normalizedName) ||
         /\bUnfertilized\b/i.test(normalizedName) ||
-        /eggbox/i.test(rawCommandName || "")
+        /eggbox/i.test(rawCommandName || "") ||
+
+        // Keep ordinary vaccine items on the display-name cleanup path
+        /\bAnimal\s+Vaccine\b/i.test(normalizedName) ||
+        /\bVaccine\b/i.test(normalizedName)
     );
 }
 
@@ -326,6 +330,7 @@ function removeDisplayOnlyTags(name) {
         ["Headgear"],
         ["Handwear"],
         ["Building"],
+        ["Weapon"],
         ["Relic", "Inert"],
         ["Relic"],
         ["Inert"],
