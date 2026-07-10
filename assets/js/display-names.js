@@ -270,9 +270,21 @@ function applyManualCommandSpacing(name) {
             }
         },
         {
-            pattern: /^ishmutianchild['’]?s\s*(.+)$/i,
+            pattern: /^milian(.+)$/i,
             replace: function (match, itemName) {
-                return "Ishmutian Child's " + titleCaseKnownWords(itemName);
+                return "Milian " + titleCaseKnownWords(itemName);
+            }
+        },
+        {
+            pattern: /^milira(.+)$/i,
+            replace: function (match, itemName) {
+                return "Milira " + titleCaseKnownWords(itemName);
+            }
+        },
+        {
+            pattern: /^milira['’]s\s*(.+)$/i,
+            replace: function (match, itemName) {
+                return "Milian " + titleCaseKnownWords(itemName);
             }
         },
         {
@@ -580,7 +592,8 @@ function moveLeadingClarifierToEnd(name) {
         "pallet",
         "crown",
         "neuroformer",
-        "bedroll"
+        "bedroll",
+        "encoder"
     ]);
 
     const firstWord = words[0];
@@ -772,10 +785,20 @@ function applyKnownCompoundSpacing(text) {
         .replace(/schooluniform/gi, "school uniform")
         .replace(/babycarrier/gi, "baby carrier")
         .replace(/babysling/gi, "baby sling")
-        .replace(/blackfootedferret/gi, "black-footed ferret")
         .replace(/megawolverine/gi, "megawolverine")
         .replace(/packagedsurvival/gi, "packaged survival")
-        .replace(/redpanda/gi, "red panda");
+        .replace(/redpanda/gi, "red panda")
+        .replace(/tasmaniandevil/gi, "tasmanian devil")
+        .replace(/giantpangolin/gi, "giant pangolin")
+        .replace(/sealion/gi, "sea lion")
+        .replace(/monitorlizard/gi, "monitor lizard")
+        .replace(/labradorretriever/gi, "labrador retriever")
+        .replace(/ishmutianchilds/gi, "ishmutian child's")
+        .replace(/lightbulletproof/gi, "light bulletproof")
+        .replace(/artemisarmor/gi, "artemis armor")
+        .replace(/blackbodycon/gi, "black bodycon")
+        .replace(/highwaistedpleated/gi, "high waisted pleated")
+        .replace(/antimateriel/gi, "antimateriel");
     
 }
 
@@ -809,7 +832,7 @@ function moveSizeQualifiersToEnd(name) {
 
     const words = name.split(/\s+/).filter(Boolean);
     const sizeIndex = words.findIndex(function (word) {
-        return /^(Broad|Medium|Standard|High|1x1|1x2|2x2|2x4|3x3)$/i.test(word);
+        return /^(Broad|Medium|Standard|High|style1|style2|1x1|1x2|2x2|2x4|3x3)$/i.test(word);
     });
 
     if (sizeIndex === -1) {
@@ -834,6 +857,7 @@ function commandNameHasKnownSuffix(rawCommandName) {
         "treatmentpill",
         "medicine",
         "powder",
+        "grenade",
         "neutraliser",
         "stabilizer",
         "vaccine",
@@ -884,6 +908,8 @@ function commandNameHasKnownSuffix(rawCommandName) {
         "uniform",
         "bench",
         "torch",
+        "rifle",
+        "shotgun",
         "coffee",
         "beans",
         "helm",
@@ -898,18 +924,15 @@ function commandNameHasKnownSuffix(rawCommandName) {
         "machine",
         "human",
         "fur",
-        "fan",
         "shadow",
         "stock",
         "throne",
         "meal",
         "staff",
         "toque",
-        "sublink",
-        "hotspring",
         "station",
-        "core",
-        "printer"
+        "printer",
+        "whiskey"
     ];
 
     return knownSuffixes.some(function (suffix) {
@@ -926,6 +949,7 @@ function splitKnownSuffix(text) {
         "battery",
         "medicine",
         "powder",
+        "grenade",
         "treatmentpill",
         "bodystrap",
         "neutraliser",
@@ -974,6 +998,8 @@ function splitKnownSuffix(text) {
         "uniform",
         "bench",
         "torch",
+        "rifle",
+        "shotgun",
         "coffee",
         "beans",
         "helm",
@@ -988,7 +1014,6 @@ function splitKnownSuffix(text) {
         "human",
         "leather",
         "fur",
-        "fan",
         "shadow",
         "stock",
         "throne",
@@ -996,11 +1021,9 @@ function splitKnownSuffix(text) {
         "staff",
         "wool",
         "toque",
-        "sublink",
-        "hotspring",
         "station",
-        "core",
-        "printer"
+        "printer",
+        "whiskey"
     ];
 
     let remaining = String(text || "");
@@ -1120,6 +1143,7 @@ function getMismatchedCommandNameOverride(rawDisplayName, rawCommandName) {
         mortar: "Mortar",
         psilocap: "Psilocap",
         smellingsalts: "Smelling Salts",
+        basicsubcore: "Basic Subcore",
         highsubcore: "High Subcore",
         standardsubcore: "Standard Subcore",
         opium: "Opium",
@@ -1134,7 +1158,19 @@ function getMismatchedCommandNameOverride(rawDisplayName, rawCommandName) {
         miliraglorybeacon: "Milira Glory Beacon",
         miliragravitytrap: "Milira Gravity Trap",
         milirarepulsiontrap: "Milira Repulsion Trap",
-        walkinfreezerunit: "Walk-in Freezer Unit" 
+        walkinfreezerunit: "Walk-in Freezer Unit",
+        androidbehavioriststation: "Android Behaviorist Station",
+        androidcreationstation: "Android Creation Station",
+        towelrail: "Towel Rail",
+        ceilingfan1x1: "Ceiling Fan (1x1)",
+        ceilingfan2x2: "Ceiling Fan (2x2)",
+        controlsublinkstandard: "Control Sublink (Standard)",
+        mechgestationprocessor: "Mech Gestation Processor",
+        milianoneeyedtowershield: "Milian One-eyed Towershield",
+        twinrotorpropulsionsystem: "Milian Twin-rotor Propulsion System",
+        arachnesmg: "Arachne Smg",
+        divinenightblade: "Divine Nightblade",
+        longrangeparticlesniperrifle: "Long-range Particle Sniper Rifle"
         
     };
 
