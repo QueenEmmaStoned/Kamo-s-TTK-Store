@@ -284,7 +284,6 @@ function applyManualCommandSpacing(name) {
             replace: function (match, itemName) {
                 return "Prestige " + titleCaseKnownWords(itemName);
         }
-},
     ];
 
     for (const rule of manualRules) {
