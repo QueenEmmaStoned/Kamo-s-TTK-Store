@@ -361,6 +361,7 @@ function applyConfiguredWordMoves(name) {
     const moves = [
         { direction: "front", words: ["Slave"] },
         { direction: "front", words: ["Small"] },
+        { direction: "end", words: ["Meat"] },
         { direction: "end", words: ["Armor", "Helmet"] },
         { direction: "end", words: ["Hat"] },
         { direction: "end", words: ["Targeter"] },
@@ -500,7 +501,6 @@ function moveLeadingClarifierToEnd(name) {
         "wolf",
         "bear",
         "fox",
-        "meat",
         "leather",
         "wool",
         "egg",
