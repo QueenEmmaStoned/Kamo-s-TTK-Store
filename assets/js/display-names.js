@@ -286,6 +286,12 @@ function applyManualCommandSpacing(name) {
             replace: function (match, itemName) {
                 return "Prestige " + titleCaseKnownWords(itemName);
             }
+        },
+        {
+            pattern: /^dragonian(.+)$/i,
+            replace: function (match, itemName) {
+                return "Dragonian " + titleCaseKnownWords(itemName);
+            }
         }
     ];
 
@@ -338,7 +344,8 @@ function removeDisplayOnlyTags(name) {
         ["Relic"],
         ["Inert"],
         ["Mawy"],
-        ["Industrial"]
+        ["Industrial"],
+        ["Log"]
     ];
 
     return removeTagPhrases(name, tagPhrases);
@@ -768,6 +775,7 @@ function commandNameHasKnownSuffix(rawCommandName) {
         "armor",
         "shirt",
         "pants",
+        "vest",
         "robe",
         "cape",
         "hood",
@@ -788,7 +796,11 @@ function commandNameHasKnownSuffix(rawCommandName) {
         "meat",
         "leather",
         "wool",
-        "egg"
+        "egg",
+        "leaves",
+        "veil",
+        "hood",
+        "rack"
     ];
 
     return knownSuffixes.some(function (suffix) {
@@ -820,6 +832,7 @@ function splitKnownSuffix(text) {
         "armor",
         "shirt",
         "pants",
+        "vest",
         "robe",
         "cape",
         "hood",
@@ -836,7 +849,11 @@ function splitKnownSuffix(text) {
         "strap",
         "blouse",
         "dress",
-        "pill"
+        "pill",
+        "leaves",
+        "veil",
+        "hood",
+        "rack"
     ];
 
     let remaining = String(text || "");
@@ -941,7 +958,9 @@ function getMismatchedCommandNameOverride(rawDisplayName, rawCommandName) {
         meathook: "Meat Hook",
         cannedeggs: "Canned Eggs",
         shirtandtie: "Shirt and Tie",
-        trenchgun: "Trenchgun"
+        trenchgun: "Trenchgun",
+        wasteleather: "Waste Leather",
+        eltselem: "Eltselem (Incubator)",
         
     };
 
