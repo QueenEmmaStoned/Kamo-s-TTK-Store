@@ -246,12 +246,6 @@ function applyManualCommandSpacing(name) {
             }
         },
         {
-            pattern: /^ishmutianchild'?s(.+)$/i,
-            replace: function (match, itemName) {
-                return "Ishmutian Child's " + titleCaseKnownWords(itemName);
-            }
-        },
-        {
             pattern: /^skia(.+)$/i,
             replace: function (match, itemName) {
                 return "Skia " + titleCaseKnownWords(itemName);
