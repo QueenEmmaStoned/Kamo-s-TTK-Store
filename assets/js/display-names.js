@@ -5,23 +5,24 @@ function humanizeStoreName(text, commandName) {
 
     const rawDisplayName = text.trim();
     const rawCommandName = (commandName || "").trim();
-
+    
     const mismatchOverride = getMismatchedCommandNameOverride(rawDisplayName, rawCommandName);
     if (mismatchOverride) {
         return mismatchOverride;
     }
-
+    
+    if (shouldUseCommandNameForTable(rawDisplayName, rawCommandName)) {
+        return formatTableCommandName(rawCommandName);
+    }
+    
+    if (shouldUseCommandNameForSpecialFormattedItem(rawDisplayName, rawCommandName)) {
+        return formatSpecialCommandName(rawDisplayName, rawCommandName);
+    }
+    
     const usingCommandName =
         shouldUseCommandNameAsDisplay(rawDisplayName, rawCommandName) ||
         shouldUseCommandNameForMismatch(rawDisplayName, rawCommandName);
     
-    let name = usingCommandName ? rawCommandName : rawDisplayName;
-
-    if (shouldUseCommandNameForSpecialFormattedItem(rawDisplayName, rawCommandName)) {
-        return formatSpecialCommandName(rawDisplayName, rawCommandName);
-    }
-
-    const usingCommandName = shouldUseCommandNameAsDisplay(rawDisplayName, rawCommandName);
     let name = usingCommandName ? rawCommandName : rawDisplayName;
 
     name = applyManualCommandSpacing(name);
@@ -784,15 +785,9 @@ function capitalizeFirstLetter(word) {
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 }
 
-// function getMismatchedCommandNameOverride(rawDisplayName, rawCommandName) {
-//     const key = normalizeForNameComparison(rawCommandName);
-
-//     const overrides = {
-//         advancedcomponent: "Advanced Component",
-//     };
-
-//     return overrides[key] || "";
-// }
+function getMismatchedCommandNameOverride(rawDisplayName, rawCommandName) {
+    return "";
+}
 
 window.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".store-display-name").forEach(function (element) {
