@@ -1170,7 +1170,9 @@ function getMismatchedCommandNameOverride(rawDisplayName, rawCommandName) {
         twinrotorpropulsionsystem: "Milian Twin-rotor Propulsion System",
         arachnesmg: "Arachne Smg",
         divinenightblade: "Divine Nightblade",
-        longrangeparticlesniperrifle: "Long-range Particle Sniper Rifle"
+        longrangeparticlesniperrifle: "Long-range Particle Sniper Rifle",
+        highexplosiveshell: "High-Explosive Shell",
+        iedtrap: "IED Trap"
         
     };
 
