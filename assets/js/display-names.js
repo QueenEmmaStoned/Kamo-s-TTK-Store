@@ -174,9 +174,11 @@ function formatSpecialCommandName(rawDisplayName, rawCommandName) {
 }
 
 function isHarMeatDisplayName(displayName) {
+    const normalizedName = normalizeNameSpacing(displayName || "");
+
     return (
-        /^HAR\s+(CO\s+Race|EL\s+Monster|EL\s+Race).*Meat$/i.test(displayName) ||
-        /^Meat[_\s]+HAR[_\s]+(CO[_\s]+Race|EL[_\s]+Monster|EL[_\s]+Race)/i.test(displayName)
+        /^HAR\s+(CO\s+Race|EL\s+Monster|EL\s+Race).*Meat$/i.test(normalizedName) ||
+        /^Meat\s+HAR\s+(CO\s+Race|EL\s+Monster|EL\s+Race)/i.test(normalizedName)
     );
 }
 
