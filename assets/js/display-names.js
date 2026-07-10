@@ -515,7 +515,8 @@ function moveLeadingClarifierToEnd(name) {
         "blocks",
         "turret",
         "pallet",
-        "crown"
+        "crown",
+        "soup"
     ]);
 
     const firstWord = words[0];
@@ -910,9 +911,19 @@ function capitalizeDisplayToken(token) {
 }
 
 function getMismatchedCommandNameOverride(rawDisplayName, rawCommandName) {
-    return "";
-}
+    const key = normalizeForNameComparison(rawCommandName);
 
+    const overrides = {
+        meathook: "Meat Hook",
+        militaryberet: "Military Beret",
+        cannedeggs: "Canned Egggs",
+        shirtandtie: "Shirt and Tie",
+        trenchgun: "Trenchgun",
+        
+    };
+
+    return overrides[key] || "";
+}
 window.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".store-display-name").forEach(function (element) {
         const displayName = element.textContent.trim();
