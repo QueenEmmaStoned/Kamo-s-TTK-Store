@@ -739,32 +739,32 @@ function splitKnownSuffix(text) {
     const suffixParts = [];
     let changed = true;
 
-    while (changed) {
-        changed = false;
-
-        const lowerText = remaining.toLowerCase();
-
-        for (const suffix of knownSuffixes) {
-            if (lowerText === suffix) {
-                continue;
-            }
-
-            if (lowerText.endsWith(suffix) && remaining.length > suffix.length) {
-                const firstPart = remaining.slice(0, remaining.length - suffix.length);
-                const lastPart = remaining.slice(remaining.length - suffix.length);
-
-                remaining = firstPart;
-                suffixParts.unshift(lastPart);
-                changed = true;
-                break;
+        while (changed) {
+            changed = false;
+    
+            const lowerText = remaining.toLowerCase();
+    
+            for (const suffix of knownSuffixes) {
+                if (lowerText === suffix) {
+                    continue;
+                }
+    
+                if (lowerText.endsWith(suffix) && remaining.length > suffix.length) {
+                    const firstPart = remaining.slice(0, remaining.length - suffix.length);
+                    const lastPart = remaining.slice(remaining.length - suffix.length);
+    
+                    remaining = firstPart;
+                    suffixParts.unshift(lastPart);
+                    changed = true;
+                    break;
+                }
             }
         }
-    }
 
     return [remaining, ...suffixParts]
         .filter(Boolean)
         .join(" ");
-}
+    }
     return text;
 }
 
