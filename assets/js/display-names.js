@@ -981,6 +981,10 @@ function getMismatchedCommandNameOverride(rawDisplayName, rawCommandName) {
         trenchgun: "Trenchgun",
         wasteleather: "Waste Leather",
         eltselem: "Eltselem (Incubator)",
+        hood: "Hood",
+        veil: "Veil",
+        tribalwear: "Tribalwear",
+        casualt-shirt: "Casual T-Shirt"
         
     };
 
