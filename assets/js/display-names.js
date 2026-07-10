@@ -296,7 +296,25 @@ function applyManualCommandSpacing(name) {
         {
             pattern: /^evelieten(.+)$/i,
             replace: function (match, itemName) {
-                return "Evelieten " + titleCaseKnownWordsWithParenthetical(itemName);
+                return "Evelieten " + titleCaseKnownWords(itemName);
+            }
+        },
+        {
+            pattern: /^kids(.+)$/i,
+            replace: function (match, itemName) {
+                return "Kid's " + titleCaseKnownWords(itemName);
+            }
+        },
+        {
+            pattern: /^churchdossier(.+)$/i,
+            replace: function (match, itemName) {
+                return "Milira Church Dossier: " + titleCaseKnownWords(itemName) + "Class";
+            }
+        },
+        {
+            pattern: /^classpermit(.+)$/i,
+            replace: function (match, itemName) {
+                return "Milira Class Permit: " + titleCaseKnownWords(itemName);
             }
         }
     ];
@@ -351,7 +369,9 @@ function removeDisplayOnlyTags(name) {
         ["Inert"],
         ["Mawy"],
         ["Industrial"],
-        ["Log"]
+        ["Log"],
+        ["Stuff"],
+        ["Stuffed"]
     ];
 
     return removeTagPhrases(name, tagPhrases);
@@ -403,7 +423,8 @@ function applyConfiguredWordMoves(name) {
         { direction: "end", words: ["Hat"] },
         { direction: "end", words: ["Targeter"] },
         { direction: "front", words: ["Unique"] },
-        { direction: "end", words: ["Soup"] }
+        { direction: "end", words: ["Soup"] },
+        { direction: "end", words: ["Meal"] }
     ];
 
     for (const move of moves) {
@@ -538,15 +559,16 @@ function moveLeadingClarifierToEnd(name) {
         "wolf",
         "bear",
         "fox",
-        "ferret",
         "pangolin",
-        "dryad",
-        "sealion",
+        "devil",
+        "lion",
+        "retriever",
+        "lizard",
         "leather",
         "fur",
         "wool",
         "egg",
-        "meal",
+        "paste",
         "trap",
         "shell",
         "subcore",
@@ -557,7 +579,8 @@ function moveLeadingClarifierToEnd(name) {
         "turret",
         "pallet",
         "crown",
-        "steel"
+        "neuroformer",
+        "bedroll"
     ]);
 
     const firstWord = words[0];
@@ -747,11 +770,12 @@ function applyKnownCompoundSpacing(text) {
         .replace(/infantillness/gi, "infant illness")
         .replace(/muscleparasites/gi, "muscle parasites")
         .replace(/schooluniform/gi, "school uniform")
-        .replace(/gojuice/gi, "go-juice")
-        .replace(/wakeup/gi, "wake-up")
         .replace(/babycarrier/gi, "baby carrier")
         .replace(/babysling/gi, "baby sling")
-        .replace(/tshirt/gi, "t-shirt");
+        .replace(/blackfootedferret/gi, "black-footed ferret")
+        .replace(/megawolverine/gi, "megawolverine")
+        .replace(/packagedsurvival/gi, "packaged survival")
+        .replace(/redpanda/gi, "red panda");
     
 }
 
@@ -806,8 +830,10 @@ function commandNameHasKnownSuffix(rawCommandName) {
         "component",
         "implant",
         "mechanites",
+        "battery",
         "treatmentpill",
         "medicine",
+        "powder",
         "neutraliser",
         "stabilizer",
         "vaccine",
@@ -855,7 +881,7 @@ function commandNameHasKnownSuffix(rawCommandName) {
         "suit",
         "shield",
         "coverings",
-        "schooluniform",
+        "uniform",
         "bench",
         "torch",
         "coffee",
@@ -869,7 +895,6 @@ function commandNameHasKnownSuffix(rawCommandName) {
         "shower",
         "toilet",
         "towel",
-        "freezer",
         "machine",
         "human",
         "fur",
@@ -877,9 +902,14 @@ function commandNameHasKnownSuffix(rawCommandName) {
         "shadow",
         "stock",
         "throne",
-        "opium",
         "meal",
-        "radiator"
+        "staff",
+        "toque",
+        "sublink",
+        "hotspring",
+        "station",
+        "core",
+        "printer"
     ];
 
     return knownSuffixes.some(function (suffix) {
@@ -893,7 +923,9 @@ function splitKnownSuffix(text) {
         "component",
         "implant",
         "mechanites",
+        "battery",
         "medicine",
+        "powder",
         "treatmentpill",
         "bodystrap",
         "neutraliser",
@@ -939,7 +971,7 @@ function splitKnownSuffix(text) {
         "suit",
         "shield",
         "coverings",
-        "schooluniform",
+        "uniform",
         "bench",
         "torch",
         "coffee",
@@ -952,7 +984,6 @@ function splitKnownSuffix(text) {
         "heater",
         "shower",
         "toilet",
-        "freezer",
         "machine",
         "human",
         "leather",
@@ -961,9 +992,15 @@ function splitKnownSuffix(text) {
         "shadow",
         "stock",
         "throne",
-        "opium",
         "meal",
-        "radiator"
+        "staff",
+        "wool",
+        "toque",
+        "sublink",
+        "hotspring",
+        "station",
+        "core",
+        "printer"
     ];
 
     let remaining = String(text || "");
@@ -1033,7 +1070,7 @@ function capitalizePawnKindEntry(name, rawDisplayName, rawCommandName) {
     );
 
     if (!isPawnKind) {
-        return name;
+        return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
     }
 
     return titleCaseKnownWords(name);
@@ -1069,6 +1106,7 @@ function getMismatchedCommandNameOverride(rawDisplayName, rawCommandName) {
         cannedeggs: "Canned Eggs",
         shirtandtie: "Shirt and Tie",
         trenchgun: "Trenchgun",
+        uniquetrenchgun: "Unique Trenchgun",
         wasteleather: "Waste Leather",
         eltselem: "Eltselem (Incubator)",
         hood: "Hood",
@@ -1076,7 +1114,27 @@ function getMismatchedCommandNameOverride(rawDisplayName, rawCommandName) {
         tribalwear: "Tribalwear",
         casualtshirt: "Casual T-Shirt",
         dragonianbattlehelmaboth: "Dragonian Battle Helm (Both)",
-        androidpartworkbench: "Android Part Workbench"
+        androidpartworkbench: "Android Part Workbench",
+        compositebrick: "Composite Brick",
+        condimentpreptable: "Condiment Preptable",
+        mortar: "Mortar",
+        psilocap: "Psilocap",
+        smellingsalts: "Smelling Salts",
+        highsubcore: "High Subcore",
+        standardsubcore: "Standard Subcore",
+        opium: "Opium",
+        miliraprintworkbench: "Milira Print Workbench",
+        milirashardark: "Milira Shard Ark",
+        miliratailorworkbench: "Milira Tailor Workbench",
+        bonsaipot: "Bonsai Pot",
+        evelietenclosurecapsule: "Evelieten Closure Capsule",
+        grandmeditationthrone: "Grand Meditation Throne",
+        hilt: "Hilt",
+        immaturedryadmeat: "Immature Dryad Meat",
+        miliraglorybeacon: "Milira Glory Beacon",
+        miliragravitytrap: "Milira Gravity Trap",
+        milirarepulsiontrap: "Milira Repulsion Trap",
+        walkinfreezerunit: "Walk-in Freezer Unit" 
         
     };
 
