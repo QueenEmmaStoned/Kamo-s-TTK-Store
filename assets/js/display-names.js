@@ -175,8 +175,8 @@ function formatSpecialCommandName(rawDisplayName, rawCommandName) {
 
 function isHarMeatDisplayName(displayName) {
     return (
-        /^HAR\s+(CO\s+Race|EL\s+Monster).*Meat$/i.test(displayName) ||
-        /^Meat[_\s]+HAR[_\s]+(CO[_\s]+Race|EL[_\s]+Monster)/i.test(displayName)
+        /^HAR\s+(CO\s+Race|EL\s+Monster|EL\s+Race).*Meat$/i.test(displayName) ||
+        /^Meat[_\s]+HAR[_\s]+(CO[_\s]+Race|EL[_\s]+Monster|EL[_\s]+Race)/i.test(displayName)
     );
 }
 
