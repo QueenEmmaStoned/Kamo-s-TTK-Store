@@ -11,9 +11,11 @@ function humanizeStoreName(text, commandName) {
         return mismatchOverride;
     }
 
-    if (shouldUseCommandNameForTable(rawDisplayName, rawCommandName)) {
-        return formatTableCommandName(rawCommandName);
-    }
+    const usingCommandName =
+        shouldUseCommandNameAsDisplay(rawDisplayName, rawCommandName) ||
+        shouldUseCommandNameForMismatch(rawDisplayName, rawCommandName);
+    
+    let name = usingCommandName ? rawCommandName : rawDisplayName;
 
     if (shouldUseCommandNameForSpecialFormattedItem(rawDisplayName, rawCommandName)) {
         return formatSpecialCommandName(rawDisplayName, rawCommandName);
@@ -27,7 +29,6 @@ function humanizeStoreName(text, commandName) {
 
     if (usingCommandName) {
         name = restoreCommandPunctuation(name, rawCommandName);
-        return finalClean(name);
     }
 
     name = removeDisplayOnlyTags(name);
@@ -783,15 +784,15 @@ function capitalizeFirstLetter(word) {
     return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 }
 
-function getMismatchedCommandNameOverride(rawDisplayName, rawCommandName) {
-    const key = normalizeForNameComparison(rawCommandName);
+// function getMismatchedCommandNameOverride(rawDisplayName, rawCommandName) {
+//     const key = normalizeForNameComparison(rawCommandName);
 
-    const overrides = {
-        advancedcomponent: "Advanced Component"
-    };
+//     const overrides = {
+//         advancedcomponent: "Advanced Component",
+//     };
 
-    return overrides[key] || "";
-}
+//     return overrides[key] || "";
+// }
 
 window.addEventListener("DOMContentLoaded", function () {
     document.querySelectorAll(".store-display-name").forEach(function (element) {
