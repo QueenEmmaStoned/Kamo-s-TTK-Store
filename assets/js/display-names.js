@@ -799,8 +799,18 @@ function commandNameHasKnownSuffix(rawCommandName) {
         "egg",
         "leaves",
         "veil",
-        "hood",
-        "rack"
+        "rack",
+        "vacsuit",
+        "suit",
+        "shield",
+        "t-shirt",
+        "bench",
+        "torch",
+        "coffee",
+        "beans",
+        "sublink",
+        "mech",
+        "sauna"
     ];
 
     return knownSuffixes.some(function (suffix) {
@@ -852,8 +862,18 @@ function splitKnownSuffix(text) {
         "pill",
         "leaves",
         "veil",
-        "hood",
-        "rack"
+        "rack",
+        "vacsuit",
+        "suit",
+        "shield",
+        "t-shirt",
+        "bench",
+        "torch",
+        "coffee",
+        "beans",
+        "sublink",
+        "mech",
+        "sauna"
     ];
 
     let remaining = String(text || "");
