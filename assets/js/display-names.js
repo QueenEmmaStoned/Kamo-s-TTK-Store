@@ -345,7 +345,8 @@ function removeDisplayOnlyTags(name) {
         ["Inert"],
         ["Mawy"],
         ["Industrial"],
-        ["Log"]
+        ["Log"],
+        ["Psychic"]
     ];
 
     return removeTagPhrases(name, tagPhrases);
