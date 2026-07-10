@@ -936,10 +936,9 @@ function getMismatchedCommandNameOverride(rawDisplayName, rawCommandName) {
 
     const overrides = {
         meathook: "Meat Hook",
-        militaryberet: "Military Beret",
-        cannedeggs: "Canned Egggs",
+        cannedeggs: "Canned Eggs",
         shirtandtie: "Shirt and Tie",
-        trenchgun: "Trenchgun",
+        trenchgun: "Trenchgun"
         
     };
 
