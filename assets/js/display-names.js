@@ -761,9 +761,9 @@ function splitKnownSuffix(text) {
             }
         }
 
-    return [remaining, ...suffixParts]
-        .filter(Boolean)
-        .join(" ");
+        return [remaining, ...suffixParts]
+            .filter(Boolean)
+            .join(" ");
     }
     return text;
 }
