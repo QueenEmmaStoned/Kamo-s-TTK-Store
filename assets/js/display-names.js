@@ -706,7 +706,8 @@ function displayNameMatchesCommandNameAfterTagCleanup(rawDisplayName, rawCommand
 }
 
 function titleCaseKnownWords(text) {
-    let spaced = splitKnownSuffix(String(text || ""));
+    let spaced = applyKnownCompoundSpacing(String(text || ""));
+    spaced = splitKnownSuffix(spaced);
     spaced = normalizeNameSpacing(spaced);
 
     return spaced
@@ -729,6 +730,17 @@ function titleCaseKnownWordsWithParenthetical(text) {
 
     return baseName + " (" + parenthetical + ")";
 }
+
+function applyKnownCompoundSpacing(text) {
+    return String(text || "")
+        .replace(/sleepingsickness/gi, "sleeping sickness")
+        .replace(/mechaniteoverride/gi, "mechanite override")
+        .replace(/infantillness/gi, "infant illness")
+        .replace(/muscleparasites/gi, "muscle parasites")
+        .replace(/schooluniform/gi, "school uniform");
+    
+}
+
 function removeDuplicateWords(name) {
     const words = name.split(/\s+/).filter(Boolean);
     const cleanedWords = [];
@@ -778,9 +790,11 @@ function commandNameHasKnownSuffix(rawCommandName) {
     const knownSuffixes = [
         "advancedcomponent",
         "component",
+        "implant",
+        "mechanites",
         "treatmentpill",
         "medicine",
-        "neutralizer",
+        "neutraliser",
         "stabilizer",
         "vaccine",
         "stuffed",
@@ -834,7 +848,18 @@ function commandNameHasKnownSuffix(rawCommandName) {
         "beans",
         "helm",
         "lab",
-        "fridge"
+        "fridge",
+        "aircon",
+        "basin",
+        "bathtub",
+        "heater",
+        "shower",
+        "toilet",
+        "towel",
+        "freezer",
+        "machine",
+        "human",
+        "fur"
     ];
 
     return knownSuffixes.some(function (suffix) {
@@ -846,10 +871,12 @@ function splitKnownSuffix(text) {
     const knownSuffixes = [
         "advancedcomponent",
         "component",
+        "implant",
+        "mechanites",
         "medicine",
         "treatmentpill",
         "bodystrap",
-        "neutralizer",
+        "neutraliser",
         "stabilizer",
         "vaccine",
         "stuffed",
@@ -899,7 +926,18 @@ function splitKnownSuffix(text) {
         "beans",
         "helm",
         "lab",
-        "fridge"
+        "fridge",
+        "aircon",
+        "basin",
+        "bathtub",
+        "heater",
+        "shower",
+        "toilet",
+        "towel",
+        "freezer",
+        "machine",
+        "human",
+        "fur"
     ];
 
     let remaining = String(text || "");
@@ -1011,7 +1049,8 @@ function getMismatchedCommandNameOverride(rawDisplayName, rawCommandName) {
         veil: "Veil",
         tribalwear: "Tribalwear",
         casualtshirt: "Casual T-Shirt",
-        dragonianbattlehelmaboth: "Dragonian Battle Helm (Both)"
+        dragonianbattlehelmaboth: "Dragonian Battle Helm (Both)",
+        androidpartworkbench: "Android Part Workbench"
         
     };
 
