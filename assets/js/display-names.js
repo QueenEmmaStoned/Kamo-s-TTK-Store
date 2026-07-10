@@ -574,7 +574,7 @@ function isNanoOrMechaniteSpecial(rawDisplayName, rawCommandName) {
     const cleanedDisplayName = removeDisplayOnlyTags(normalizeNameSpacing(rawDisplayName || ""));
     const haystack = [rawCommandName || "", cleanedDisplayName].join(" ");
 
-    return /(nano[-_\s]*vaccine|archo[-_\s]*vaccine|mechanite[-_\s]*neutralizer|mechanite[-_\s]*stabilizer)/i.test(haystack);
+    return /(nano[-_\s]*vaccine|archo[-_\s]*vaccine|mechanite[-_\s]*neutraliser|mechanite[-_\s]*stabilizer|nano[-_\s]*shield|archo[-_\s]*trojan/i.test(haystack);
 }
 
 function formatNanoOrMechaniteSpecial(rawDisplayName, rawCommandName) {
@@ -598,12 +598,20 @@ function formatSpecialMedicalItemFromSource(source) {
             label: "NanoVaccine"
         },
         {
+            pattern: /^nano[-_\s]*shield(?:\((.+?)\)|[-_\s]*(.+))?$/i,
+            label: "NanoShield"
+        },
+        {
             pattern: /^archo[-_\s]*vaccine(?:\((.+?)\)|[-_\s]*(.+))?$/i,
             label: "ArchoVaccine"
         },
         {
-            pattern: /^mechanite[-_\s]*neutralizer(?:\((.+?)\)|[-_\s]*(.+))?$/i,
-            label: "Mechanite Neutralizer"
+            pattern: /^archo[-_\s]*trojan(?:\((.+?)\)|[-_\s]*(.+))?$/i,
+            label: "ArchoTrojan"
+        },
+        {
+            pattern: /^mechanite[-_\s]*neutraliser(?:\((.+?)\)|[-_\s]*(.+))?$/i,
+            label: "Mechanite Neutraliser"
         },
         {
             pattern: /^mechanite[-_\s]*stabilizer(?:\((.+?)\)|[-_\s]*(.+))?$/i,
@@ -817,13 +825,13 @@ function commandNameHasKnownSuffix(rawCommandName) {
         "suit",
         "shield",
         "t-shirt",
+        "coverings",
+        "schooluniform",
         "bench",
         "torch",
         "coffee",
         "beans",
-        "sublink",
-        "mech",
-        "sauna"
+        "helm"
     ];
 
     return knownSuffixes.some(function (suffix) {
@@ -880,13 +888,13 @@ function splitKnownSuffix(text) {
         "suit",
         "shield",
         "t-shirt",
+        "coverings",
+        "schooluniform",
         "bench",
         "torch",
         "coffee",
         "beans",
-        "sublink",
-        "mech",
-        "sauna"
+        "helm"
     ];
 
     let remaining = String(text || "");
