@@ -984,7 +984,7 @@ function getMismatchedCommandNameOverride(rawDisplayName, rawCommandName) {
         hood: "Hood",
         veil: "Veil",
         tribalwear: "Tribalwear",
-        casualt-shirt: "Casual T-Shirt"
+        casualtshirt: "Casual T-Shirt"
         
     };
 
