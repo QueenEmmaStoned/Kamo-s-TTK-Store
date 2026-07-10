@@ -812,7 +812,8 @@ function splitKnownSuffix(text) {
         "strap",
         "blouse",
         "dress",
-        "pill"
+        "pill",
+        "arachne"
     ];
 
     let remaining = String(text || "");
