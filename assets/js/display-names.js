@@ -264,7 +264,13 @@ function applyManualCommandSpacing(name) {
             replace: function (match, creatureName) {
                 return titleCaseKnownWords(creatureName) + " Meat";
             }
+        },
+        {
+            pattern: /^arachne(.+)$/i,
+            replace: function (match, itemName) {
+                return "Arachne " + titleCaseKnownWords(itemName);
         }
+},
     ];
 
     for (const rule of manualRules) {
@@ -812,8 +818,7 @@ function splitKnownSuffix(text) {
         "strap",
         "blouse",
         "dress",
-        "pill",
-        "arachne"
+        "pill"
     ];
 
     let remaining = String(text || "");
