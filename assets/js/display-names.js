@@ -496,6 +496,10 @@ function moveLeadingClarifierToEnd(name) {
     }
 
     const leadingClarifiers = new Set([
+        "cat",
+        "wolf",
+        "bear",
+        "fox",
         "meat",
         "leather",
         "wool",
