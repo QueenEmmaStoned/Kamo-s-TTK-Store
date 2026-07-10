@@ -574,7 +574,7 @@ function isNanoOrMechaniteSpecial(rawDisplayName, rawCommandName) {
     const cleanedDisplayName = removeDisplayOnlyTags(normalizeNameSpacing(rawDisplayName || ""));
     const haystack = [rawCommandName || "", cleanedDisplayName].join(" ");
 
-    return /(nano[-_\s]*vaccine|archo[-_\s]*vaccine|mechanite[-_\s]*neutraliser|mechanite[-_\s]*stabilizer|nano[-_\s]*shield|archo[-_\s]*trojan/i.test(haystack);
+    return /(nano[-_\s]*vaccine|archo[-_\s]*vaccine|mechanite[-_\s]*neutraliser|mechanite[-_\s]*stabilizer|nano[-_\s]*shield|archo[-_\s]*trojan)/i.test(haystack);
 }
 
 function formatNanoOrMechaniteSpecial(rawDisplayName, rawCommandName) {
