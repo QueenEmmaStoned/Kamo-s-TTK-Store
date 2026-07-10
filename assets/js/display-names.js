@@ -46,12 +46,7 @@ function humanizeStoreName(text, commandName) {
 
     name = addArtificialFromCommandName(name, rawCommandName);
     name = capitalizePawnKindEntry(name, rawDisplayName, rawCommandName);
-    name = moveSlaveToFront(name);
-    name = moveSmallToFront(name);
-    name = moveArmorHelmetToEnd(name);
-    name = moveHatToEnd(name);
-    name = moveTargeterToEnd(name);
-    name = moveUniqueToFront(name);
+    name = applyConfiguredWordMoves(name);
     name = moveSizeQualifiersToEnd(name);
     name = removeDuplicateWords(name);
     name = capitalizeDisplayWords(name);
@@ -362,28 +357,28 @@ function movePriorityTagsToFront(name) {
     return moveWordsToFront(name, ["Prestige"]);
 }
 
-function moveSlaveToFront(name) {
-    return moveWordsToFront(name, ["Slave"]);
-}
+function applyConfiguredWordMoves(name) {
+    const moves = [
+        { direction: "front", words: ["Slave"] },
+        { direction: "front", words: ["Small"] },
+        { direction: "end", words: ["Armor", "Helmet"] },
+        { direction: "end", words: ["Hat"] },
+        { direction: "end", words: ["Targeter"] },
+        { direction: "front", words: ["Unique"] },
+        { direction: "end", words: ["Soup"] }
+    ];
 
-function moveSmallToFront(name) {
-    return moveWordsToFront(name, ["Small"]);
-}
+    for (const move of moves) {
+        if (move.direction === "front") {
+            name = moveWordsToFront(name, move.words);
+        }
 
-function moveHatToEnd(name) {
-    return moveWordsToEnd(name, ["Hat"]);
-}
+        if (move.direction === "end") {
+            name = moveWordsToEnd(name, move.words);
+        }
+    }
 
-function moveArmorHelmetToEnd(name) {
-    return moveWordsToEnd(name, ["Armor", "Helmet"]);
-}
-
-function moveTargeterToEnd(name) {
-    return moveWordsToEnd(name, ["Targeter"]);
-}
-
-function moveUniqueToFront(name) {
-    return moveWordsToFront(name, ["Unique"]);
+    return name;
 }
 
 function moveWordsToFront(name, wordsToMove) {
