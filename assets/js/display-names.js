@@ -317,6 +317,7 @@ function removeDisplayOnlyTags(name) {
         ["VREA"],
         ["MP"],
         ["MVE"],
+        ["MEV"],
         ["AT"],
         ["SAB"],
         ["LWM"],
