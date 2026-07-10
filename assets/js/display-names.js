@@ -534,6 +534,7 @@ function moveLeadingClarifierToEnd(name) {
         "bear",
         "fox",
         "leather",
+        "fur",
         "wool",
         "egg",
         "meal",
@@ -937,6 +938,7 @@ function splitKnownSuffix(text) {
         "freezer",
         "machine",
         "human",
+        "leather",
         "fur"
     ];
 
