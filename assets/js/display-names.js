@@ -832,7 +832,9 @@ function commandNameHasKnownSuffix(rawCommandName) {
         "torch",
         "coffee",
         "beans",
-        "helm"
+        "helm",
+        "lab",
+        "fridge"
     ];
 
     return knownSuffixes.some(function (suffix) {
@@ -895,7 +897,9 @@ function splitKnownSuffix(text) {
         "torch",
         "coffee",
         "beans",
-        "helm"
+        "helm",
+        "lab",
+        "fridge"
     ];
 
     let remaining = String(text || "");
@@ -1006,7 +1010,8 @@ function getMismatchedCommandNameOverride(rawDisplayName, rawCommandName) {
         hood: "Hood",
         veil: "Veil",
         tribalwear: "Tribalwear",
-        casualtshirt: "Casual T-Shirt"
+        casualtshirt: "Casual T-Shirt",
+        dragonianbattlehelmaboth: "Dragonian Battle Helm (Both)"
         
     };
 
